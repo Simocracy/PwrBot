@@ -1,8 +1,8 @@
 Quellcode des PostWriter-Bot, welcher ab und an von Gobo7793 verwendet wird um verschiedene arbeiten zu erledigen.
 
 ## PwrBot
-Um den Bot Nutzen zu können, muss zunächst die Quelldatei 'PwrBot.cs' im PwrBot-Projektverzeichnis angelegt werden. Die Datei hat folgenden Inhalt:
-'''
+Um den Bot Nutzen zu können, muss zunächst die Quelldatei `PwrBot\PwrBot.cs` angelegt werden. Die Datei hat folgenden Inhalt:
+```
 using DotNetWikiBot;
 
 namespace Simocracy.PwrBot
@@ -15,8 +15,7 @@ namespace Simocracy.PwrBot
 		}
 	}
 }
-
-'''
-'BENUTZERNAME' und 'PASSWORT' müssen natürlich entsprechend angepasst werden.
+```
+`BENUTZERNAME` und `PASSWORT` müssen natürlich entsprechend angepasst werden.
 
 Im Unterverzeichnis 'DotNetWikiBot' liegen die Quelldateien sowie die Informationen über die gleichnamige MediaWiki-API-Implementierung. Der DotNetWikiBot ist unter GPL 2.0 lizenziert.
