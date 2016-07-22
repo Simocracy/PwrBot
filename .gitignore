@@ -243,3 +243,6 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+
+# Password file for wiki login
+/PwrBot/PwrBot.cs
