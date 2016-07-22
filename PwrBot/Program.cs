@@ -19,7 +19,7 @@ namespace Simocracy.PwrBot
 			AnalyseStripesStats();
 
 			Console.WriteLine("Fertig!");
-			Console.Read();
+			Console.ReadKey();
 		}
 
 		/// <summary>
@@ -28,7 +28,7 @@ namespace Simocracy.PwrBot
 		static void AnalyseStripesStats()
 		{
 			var articleName = "Statistik der UNAS-Fußballnationalmannschaft der Herren";
-			FootballMatch.MainTeam = new String[] { "UNS", "UNAS", "VSB", "AME", "CDO", "RIV" };
+			FootballMatch.MainTeam = new String[] { "UNS", "VSB", "AME", "CDO", "RIV" };
 			/*
 			 * Gruppen:
 			 * 1: Turnier
@@ -42,7 +42,7 @@ namespace Simocracy.PwrBot
 			 * 9: Wenn nicht leer: Ausverkauft
 			 * 10: Schiedsrichter
 			 */
-			var matchRegexPat = @"\|(.*[^\|\r\n]*)\s*[\r\n|\|]\|\s*([^\|\r\n]*)?\s*[\r\n|\|]\|\s*(\{\{.+\}\}[^\|\r\n]*)?[\r\n\|]\|\s*([^\|\r\n]*)?\s*[\r\n\|]\|\s*('{0,3}\{\{.+\}\}[^\|\r\n]*)?\s*[\r\n\|]\|\s*('{0,3}\{\{.+\}\}[^\|\r\n]*)?\s*[\r\n\|]\|\s*[^\|]*\|\s*'''([^']*)'''[^\|\r\n]*?\s*[\r\n\|]\|\s*([\d\.]*)(\s*\(a\))?\s*[\r\n\|]\|\s*(\{\{.*\}\}[^\|\r\n]*)?";
+			var matchRegexPat = @"\|(.*[^\|\r\n]*)\s*[\r\n|\|]\|\s*([^\|\r\n]*)?\s*[\r\n|\|]\|\s*(\{\{.+\}\}[^\|\r\n]*)[\r\n\|]\|\s*([^\|\r\n]*)?\s*[\r\n\|]\|\s*('{0,3}\{\{.+\}\}[^\|\r\n]*)?\s*[\r\n\|]\|\s*('{0,3}\{\{.+\}\}[^\|\r\n]*)?\s*[\r\n\|]\|\s*[^\|]*\|\s*'''([^']*)'''[^\|\r\n]*?\s*[\r\n\|]\|\s*([\d\.]*)(\s*\(a\))?\s*[\r\n\|]\|\s*(\{\{.*\}\}[^\|\r\n]*)?";
 
 			Console.WriteLine("Lade Artikel");
 			Page p = new Page(articleName);

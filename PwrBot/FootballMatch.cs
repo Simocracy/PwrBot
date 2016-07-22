@@ -119,11 +119,16 @@ namespace Simocracy.PwrBot
 			private set { _Referee = value.Trim(); }
 		}
 
+		/// <summary>
+		/// Quellcode im Wiki
+		/// </summary>
+		public string SourceCode { get; private set; }
+
 		public FootballMatch(Match match)
-			: this(match.Groups[1].Value, match.Groups[2].Value, match.Groups[3].Value, match.Groups[4].Value, match.Groups[5].Value, match.Groups[6].Value, match.Groups[7].Value, match.Groups[8].Value, match.Groups[9].Value, match.Groups[10].Value)
+			: this(match.Groups[1].Value, match.Groups[2].Value, match.Groups[3].Value, match.Groups[4].Value, match.Groups[5].Value, match.Groups[6].Value, match.Groups[7].Value, match.Groups[8].Value, match.Groups[9].Value, match.Groups[10].Value, match.Value)
 		{ }
 
-		public FootballMatch(string tournament, string date, string city, string stadium, string homeTeam, string awayTeam, string result, string spectators, string soldOut, string referee)
+		public FootballMatch(string tournament, string date, string city, string stadium, string homeTeam, string awayTeam, string result, string spectators, string soldOut, string referee, string source)
 		{
 			Tournament = tournament;
 			SetDate(date);
@@ -135,6 +140,7 @@ namespace Simocracy.PwrBot
 			SetSpectators(spectators);
 			SetIsSoldOut(soldOut);
 			Referee = referee;
+			SourceCode = source;
 		}
 
 		private void SetDate(string date)
