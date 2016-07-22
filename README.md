@@ -1,5 +1,7 @@
 Quellcode des PostWriter-Bot, welcher ab und an von Gobo7793 verwendet wird um verschiedene arbeiten zu erledigen.
 
+Hinweis: Quellcode ist nicht immer ausreichend Kommentiert!
+
 ## PwrBot
 Um den Bot Nutzen zu können, muss zunächst die Quelldatei `PwrBot\PwrBot.cs` angelegt werden. Die Datei hat folgenden Inhalt:
 ```
