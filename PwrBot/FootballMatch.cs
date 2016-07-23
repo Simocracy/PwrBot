@@ -145,32 +145,20 @@ namespace Simocracy.PwrBot
 
 		private void SetDate(string date)
 		{
-			if(String.IsNullOrEmpty(date))
+			DateTime dt = DateTime.MinValue;
+			if(!String.IsNullOrEmpty(date))
 			{
-				Date = DateTime.MinValue;
-			}
-			else
-			{
-				var exactDatePattern = @"(\d{1,2})\.(\d{1,2})\.(\d{2,4})";
+				var exactDatePattern = @"(\d{1,2})?\.?(\d{1,2})\.(\d{2,4})";
 				var exactDateMatch = Regex.Match(date, exactDatePattern);
 				if(exactDateMatch.Success)
 				{
 					var matchStr = exactDateMatch.Value;
 					if(exactDateMatch.Groups[3].Length < 4)
 						matchStr = matchStr.Insert(matchStr.Length - 2, "20");
-					var dt = DateTime.Parse(matchStr);
-				}
-				else
-				{
-					DateTime dt = DateTime.MinValue;
-					DateTime.TryParseExact(date, "MMM", CultureInfo.CurrentCulture, DateTimeStyles.AllowWhiteSpaces, out dt);
-					if(dt == DateTime.MinValue)
-					{
-						DateTime.TryParseExact(date, "MMMM", CultureInfo.CurrentCulture, DateTimeStyles.AllowWhiteSpaces, out dt);
-					}
-					Date = dt;
+					DateTime.TryParse(matchStr, out dt);
 				}
 			}
+			Date = dt;
 		}
 
 		private void SetResults(string result)
