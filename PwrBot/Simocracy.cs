@@ -14,7 +14,7 @@ namespace Simocracy.PwrBot
 		/// </summary>
 		/// <param name="flag">Kürzel des historischen Staates</param>
 		/// <returns>Kürzel des aktuellen Staates</returns>
-		public static string SetToSuccessorFlagNoFusion(string flag)
+		public static string ReplaceOldFlag(string flag)
 		{
 			switch(flag)
 			{
