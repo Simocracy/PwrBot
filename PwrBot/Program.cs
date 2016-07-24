@@ -16,7 +16,8 @@ namespace Simocracy.PwrBot
 		{
 			//ChangeMedirienNamespace();
 			//ChangeUNSFlaggeHistorisch();
-			AnalyseStripesStats();
+			//AnalyseStripesStats();
+			ReplaceOldFlagTemplates();
 
 			Console.WriteLine("Fertig!");
 			Console.ReadKey();
@@ -61,6 +62,33 @@ namespace Simocracy.PwrBot
 			Console.WriteLine(opponents.Count() + " Opponents found");
 			foreach(var o in opponents)
 				Console.WriteLine("{0}: {1} Matches", o.OpponentTeam, o.Matches.Count);
+		}
+
+		/// <summary>
+		/// Aktualisiert alle Flaggenvorlagen auf die Vorlage:Flaggenvorlage
+		/// </summary>
+		static void ReplaceOldFlagTemplates()
+		{
+			var oldTempRegex = @"\[\[Datei:([^\|]*)\|\{\{\{1\|20\}\}\}px\|?([^\]]*)?\]\]";
+			var newTempReplace = @"{{Flaggenvorlage|$1|$2|{{{1|}}}|{{{b|}}}|{{{h|}}}|{{{2|}}}}}";
+
+			Console.WriteLine("Ändere Flaggenvorlagen");
+			var pl = new PageList(site);
+			pl.FillAllFromCategory("Kategorie:Flaggenvorlage");
+			Console.WriteLine("Vorlagenanzahl: {0}", pl.Count());
+
+			foreach(var p in pl.pages)
+			{
+				p.Load();
+				var regex = new Regex(oldTempRegex);
+				var match = regex.Match(p.text);
+				if(match.Success)
+				{
+					Console.WriteLine("Vorlage wird geändert");
+					p.text = regex.Replace(p.text, newTempReplace);
+					p.Save("Nutzung der Vorlage:Flaggenvorlage", false);
+				}
+			}
 		}
 
 		/// <summary>
