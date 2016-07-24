@@ -16,8 +16,8 @@ namespace Simocracy.PwrBot
 		{
 			//ChangeMedirienNamespace();
 			//ChangeUNSFlaggeHistorisch();
-			//AnalyseStripesStats();
-			ReplaceOldFlagTemplates();
+			AnalyseStripesStats();
+			//ReplaceOldFlagTemplates();
 
 			Console.WriteLine("Fertig!");
 			Console.ReadKey();

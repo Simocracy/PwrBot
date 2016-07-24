@@ -202,8 +202,29 @@ namespace Simocracy.PwrBot
 		private static Dictionary<string, List<FootballMatch>> SortForOpponents(IEnumerable<FootballMatch> matches)
 		{
 			var dic = new Dictionary<string, List<FootballMatch>>();
+			var flagTempRegex = new Regex(@"\{\{([^\|\}}*)\|?(.*)?\}\}");
 
+			foreach(var match in matches)
+			{
+				var flag = flagTempRegex.Match(match.OpponentTeam).Groups[1].Value;
+				if(!String.IsNullOrEmpty(flag))
+					continue;
+				else if(flag.Contains("?"))
+					flag = String.Format("{{?}} {0}", flagTempRegex.Replace(match.OpponentTeam, String.Empty).Trim());
+				else
+				{
 
+				}
+
+				if(dic.ContainsKey(flag))
+					dic[flag].Add(match);
+				else
+				{
+					var l = new List<FootballMatch>();
+					l.Add(match);
+					dic.Add(flag, l);
+				}
+			}
 
 			return dic;
 		}
