@@ -10,15 +10,29 @@ namespace Simocracy.PwrBot
 	{
 
 		/// <summary>
-		/// Gibt Nachfolgerrelationen in Simocracy basierend auf Flaggenkürzeln zurück. Schema: Vorgänger -> Aktueller Staat (bzw. Nachfolger).
+		/// Gibt das Flaggenkürzel des aktuellen Staates bzw. Nachfolgers zurück, die nicht (de)fusioniert wurden bzw. der Nachfolger eindeutig ist.
 		/// </summary>
-		public static Dictionary<string, string> GetSuccessorFlags()
+		/// <param name="flag">Kürzel des historischen Staates</param>
+		/// <returns>Kürzel des aktuellen Staates</returns>
+		public static string SetToSuccessorFlagNoFusion(string flag)
 		{
-			var dic = new Dictionary<string, string>();
-
-
-
-			return dic;
+			switch(flag)
+			{
+				case "ABR":
+				case "BOS":
+					return "BSC";
+				case "ADE":
+					return "ORA";
+				case "AQU":
+					return "SNL";
+				case "AZO":
+				case "FNZ":
+				case "FNS":
+				case "OKA":
+					return "NZL";
+				default:
+					return flag;
+			}
 		}
 	}
 }
