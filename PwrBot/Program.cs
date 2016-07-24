@@ -54,8 +54,7 @@ namespace Simocracy.PwrBot
 				matches.Add(new FootballMatch(match));
 
 			Console.WriteLine(matches.Count + " Matches found");
-
-			//var opponents = matches.GroupBy(x => x.OpponentTeam).Select(g => new { g.Key }).ToList();
+			
 			var opponents = matches.GroupBy(u => u.OpponentTeam)
 									  .Select(grp => new { OpponentTeam = grp.Key, Matches = grp.ToList() })
 									  .ToList();

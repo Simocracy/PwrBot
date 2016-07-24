@@ -17,6 +17,11 @@ namespace Simocracy.PwrBot
 		/// </summary>
 		public static string[] MainTeam { get; set; } = { "UNS" };
 
+		/// <summary>
+		/// Liste der Nachfolgerstaaten, FLAGGENKÜRZEL, Schema Vorgänger -> Aktueller Staat (bzw. Nachfolger)
+		/// </summary>
+		public static Dictionary<string, string> Successor { get; set; } = new Dictionary<string, string>();
+
 		private string _Tournament;
 		public string Tournament
 		{
@@ -187,6 +192,20 @@ namespace Simocracy.PwrBot
 		private void SetIsSoldOut(string soldOut)
 		{
 			IsSOldOut = !String.IsNullOrEmpty(soldOut);
+		}
+
+		/// <summary>
+		/// Gruppiert eine Aufzählung mit <see cref="FootballMatch"/>-Instanzen nach den Gegnern des <see cref="MainTeam"/>
+		/// </summary>
+		/// <param name="matches">Aufzählung</param>
+		/// <returns>Nach Gegnern gruppierte Liste</returns>
+		private static Dictionary<string, List<FootballMatch>> SortForOpponents(IEnumerable<FootballMatch> matches)
+		{
+			var dic = new Dictionary<string, List<FootballMatch>>();
+
+
+
+			return dic;
 		}
 	}
 
