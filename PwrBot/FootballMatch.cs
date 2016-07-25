@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Simocracy.PwrBot
 {
 	[DebuggerDisplay("Home={HomeTeam}, Away={AwayTeam}, Result={Result}")]
-	class FootballMatch
+	public class FootballMatch
 	{
 		/// <summary>
 		/// Team, dessen Statistik erstellt wird, Basierend auf FLAGGENKÜRZEL
@@ -215,11 +215,11 @@ namespace Simocracy.PwrBot
 				else if(flag.Contains("?"))
 				{
 					var name = flagTempRegex.Replace(match.OpponentTeam, String.Empty).Trim();
-					flag = String.Format("{{{{{0}|#}}}}", Simocracy.SearchCurrentFlag(name));
+					flag = Simocracy.GetFlag(name);
 				}
 				else
 				{
-					flag = String.Format("{{{{{0}|#}}}}", Simocracy.ReplaceOldFlag(flag));
+					flag = Simocracy.GetFlag(flag);
 				}
 
 				if(dic.ContainsKey(flag))
@@ -242,6 +242,142 @@ namespace Simocracy.PwrBot
 			foreach(Match match in matches)
 				matchesList.Add(new FootballMatch(match));
 			return SortForOpponents(matchesList);
+		}
+
+		/// <summary>
+		/// Analysiert die Statistik und gibt diese nach Gegnern gruppiert und alphabetisch sortiert zurück
+		/// </summary>
+		/// <param name="matches">Spiele</param>
+		/// <returns>Statistik</returns>
+		public static SortedDictionary<string, FootballStatElement> AnalyseStats(MatchCollection regexMatches)
+		{
+			var sdic = new SortedDictionary<string, FootballStatElement>();
+			var flagTempRegex = new Regex(@"\{\{([^\|\}]*)(\|([^\}\|]*))?(\|([^\}\|]*))?\}\}");
+
+			foreach(Match regexMatch in regexMatches)
+			{
+				var match = new FootballMatch(regexMatch);
+				var flagMatch = flagTempRegex.Match(match.OpponentTeam);
+
+				var flag = flagMatch.Groups[1].Value;
+				if(String.IsNullOrEmpty(flag))
+					continue;
+
+				int pxValue;
+				string name;
+				if(flagMatch.Groups[3].Success && !flagMatch.Groups[3].Value.Contains("=") && !Int32.TryParse(flagMatch.Groups[3].Value, out pxValue))
+				{
+					name = flagMatch.Groups[3].Value;
+				}
+				else if(flagMatch.Groups[5].Success && !flagMatch.Groups[5].Value.Contains("=") && !Int32.TryParse(flagMatch.Groups[5].Value, out pxValue))
+				{
+					name = flagMatch.Groups[5].Value;
+				}
+				else
+				{
+					name = flagTempRegex.Replace(match.OpponentTeam, String.Empty).Trim();
+				}
+
+				var isNoneFlag = flag.Contains("?");
+				var isDummyName = name.Contains("#");
+				flag = Simocracy.GetFlag(isNoneFlag ? name : flag);
+				name = Simocracy.GetStateName(isDummyName ? flag : name);
+
+				if(!sdic.ContainsKey(name))
+				{
+					var fse = new FootballStatElement()
+					{
+						Name = name,
+						Stats = new FootballOpponentStats()
+						{
+							Flag = String.Format("{{{{{0}|#}}}}", flag)
+						}
+					};
+					sdic.Add(name, fse);
+				}
+				sdic[name].AddMatch(match);
+			}
+
+			return sdic;
+		}
+	}
+
+	/// <summary>
+	/// Gesamtstatistik für einen Gegner
+	/// </summary>
+	[DebuggerDisplay("Name={Name}, Matches={Matches.Count}")]
+	public class FootballStatElement
+	{
+		/// <summary>
+		/// Staatsname
+		/// </summary>
+		public string Name { get; set; } = String.Empty;
+		/// <summary>
+		/// Gesamtstatistik
+		/// </summary>
+		public FootballOpponentStats Stats { get; set; } = new FootballOpponentStats();
+		/// <summary>
+		/// Matchliste
+		/// </summary>
+		public List<FootballMatch> Matches { get; set; } = new List<FootballMatch>();
+		/// <summary>
+		/// Kommentar
+		/// </summary>
+		public string Comment { get; set; } = String.Empty;
+
+		/// <summary>
+		/// Fügt das <see cref="FootballMatch"/> hinzu und aktualisiert <see cref="Stats"/>
+		/// </summary>
+		/// <param name="match">Spiel</param>
+		public void AddMatch(FootballMatch match)
+		{
+			Matches.Add(match);
+			Stats.AddMatch(match);
+		}
+	}
+
+	/// <summary>
+	/// Statistik für Fußballspiele
+	/// </summary>
+	[DebuggerDisplay("Flag={Flag}, WDL={Win}-{Drawn}-{Lose}, Goals={GoalsFor}-{GoalsAgainst}")]
+	public class FootballOpponentStats
+	{
+		public string Flag { get; set; }
+		public int Played { get { return Win + Drawn + Lose; } }
+		public int Win { get; set; } = 0;
+		public int Drawn { get; set; } = 0;
+		public int Lose { get; set; } = 0;
+		public int GoalsFor { get; set; } = 0;
+		public int GoalsAgainst { get; set; } = 0;
+		public int GoalDiff { get { return GoalsFor - GoalsAgainst; } }
+		public int Points { get { return Win * 3 + Drawn; } }
+
+		public void AddMatch(FootballMatch match)
+		{
+			if(match.HomeTeam == match.OpponentTeam)
+			{
+				if(match.ResultHome < match.ResultAway)
+					Win++;
+				else if(match.ResultHome > match.ResultAway)
+					Lose++;
+				else
+					Drawn++;
+
+				GoalsFor += match.ResultAway;
+				GoalsAgainst += match.ResultHome;
+			}
+			else
+			{
+				if(match.ResultHome > match.ResultAway)
+					Win++;
+				else if(match.ResultHome < match.ResultAway)
+					Lose++;
+				else
+					Drawn++;
+
+				GoalsFor += match.ResultHome;
+				GoalsAgainst += match.ResultAway;
+			}
 		}
 	}
 

@@ -16,9 +16,9 @@ namespace Simocracy.PwrBot
 		{
 			//ChangeMedirienNamespace();
 			//ChangeUNSFlaggeHistorisch();
-			//AnalyseStripesStats();
+			AnalyseStripesStats();
 			//ReplaceOldFlagTemplates();
-			RemoveCategories();
+			//RemoveCategories();
 
 			Console.WriteLine("Fertig!");
 			Console.ReadKey();
@@ -50,13 +50,13 @@ namespace Simocracy.PwrBot
 			Page p = new Page(articleName);
 			p.Load();
 
-			var matchesRegex = Regex.Matches(p.text, matchRegexPat);	
+			var matchesRegex = Regex.Matches(p.text, matchRegexPat);
 			Console.WriteLine(matchesRegex.Count + " Matches found");
 
-			var opponents = FootballMatch.SortForOpponents(matchesRegex);
+			var opponents = FootballMatch.AnalyseStats(matchesRegex);
 			Console.WriteLine(opponents.Count + " Opponents found");
 			foreach(var o in opponents)
-				Console.WriteLine("{0}: {1} Matches", o.Key, o.Value.Count);
+				Console.WriteLine("{0}: {1} Matches", o.Key, o.Value.Stats.Played);
 		}
 
 		/// <summary>
