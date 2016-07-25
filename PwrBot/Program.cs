@@ -16,8 +16,9 @@ namespace Simocracy.PwrBot
 		{
 			//ChangeMedirienNamespace();
 			//ChangeUNSFlaggeHistorisch();
-			AnalyseStripesStats();
+			//AnalyseStripesStats();
 			//ReplaceOldFlagTemplates();
+			RemoveCategories();
 
 			Console.WriteLine("Fertig!");
 			Console.ReadKey();
@@ -160,6 +161,25 @@ namespace Simocracy.PwrBot
 				}
 				else
 					Console.WriteLine(p.title + " enthählt keine Vorlage.");
+			}
+		}
+
+		/// <summary>
+		/// Löscht die Kategorien
+		/// </summary>
+		static void RemoveCategories()
+		{
+			var oldCat = "Kategorie:Reform";
+			Console.WriteLine("Lösche Kategorien von " + oldCat);
+
+			PageList pl = new PageList(site);
+			pl.FillAllFromCategory(oldCat);
+			Console.WriteLine("Seitenanzahl: " + pl.Count());
+			foreach(var p in pl.pages)
+			{
+				p.Load();
+				p.RemoveFromCategory(oldCat);
+				p.Save("Löschen der Kategorie:Reform", false);
 			}
 		}
 
