@@ -20,4 +20,4 @@ namespace Simocracy.PwrBot
 ```
 `BENUTZERNAME` und `PASSWORT` müssen natürlich entsprechend angepasst werden.
 
-Im Unterverzeichnis 'DotNetWikiBot' liegen die Quelldateien sowie die Informationen über die gleichnamige MediaWiki-API-Implementierung. Der DotNetWikiBot ist unter GPL 2.0 lizenziert.
+Im Unterverzeichnis `DotNetWikiBot` liegen die Quelldateien sowie die Informationen über die gleichnamige MediaWiki-API-Implementierung. Der DotNetWikiBot ist unter GPL 2.0 lizenziert.
