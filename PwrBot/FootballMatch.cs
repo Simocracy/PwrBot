@@ -80,10 +80,10 @@ namespace Simocracy.PwrBot
 			get {
 				foreach(var s in MainTeam)
 				{
-					if(HomeTeam.Contains(s))
-						return AwayTeam;
+					if(AwayTeam.Contains(s))
+						return HomeTeam;
 				}
-				return HomeTeam;
+				return AwayTeam;
 			}			
 		}
 
@@ -153,14 +153,17 @@ namespace Simocracy.PwrBot
 			DateTime dt = DateTime.MinValue;
 			if(!String.IsNullOrEmpty(date))
 			{
-				var exactDatePattern = @"(\d{1,2})?\.?(\d{1,2})\.(\d{2,4})";
+				var exactDatePattern = @"((\d{1,2})\.)?((\d{1,2})\.)?(\d{2,4})";
 				var exactDateMatch = Regex.Match(date, exactDatePattern);
 				if(exactDateMatch.Success)
 				{
 					var matchStr = exactDateMatch.Value;
-					if(exactDateMatch.Groups[3].Length < 4)
+					if(exactDateMatch.Groups[5].Length < 4)
 						matchStr = matchStr.Insert(matchStr.Length - 2, "20");
-					DateTime.TryParse(matchStr, out dt);
+					if(exactDateMatch.Groups[1].Success)
+						DateTime.TryParse(matchStr, out dt);
+					else
+						dt = new DateTime(Int32.Parse(matchStr), 1, 1);
 				}
 			}
 			Date = dt;
@@ -199,21 +202,24 @@ namespace Simocracy.PwrBot
 		/// </summary>
 		/// <param name="matches">Aufzählung</param>
 		/// <returns>Nach Gegnern gruppierte Liste</returns>
-		private static Dictionary<string, List<FootballMatch>> SortForOpponents(IEnumerable<FootballMatch> matches)
+		public static Dictionary<string, List<FootballMatch>> SortForOpponents(IEnumerable<FootballMatch> matches)
 		{
 			var dic = new Dictionary<string, List<FootballMatch>>();
-			var flagTempRegex = new Regex(@"\{\{([^\|\}}*)\|?(.*)?\}\}");
+			var flagTempRegex = new Regex(@"\{\{([^\|\}]*)(\|([^\}\|]*))?(\|([^\}\|]*))?\}\}");
 
 			foreach(var match in matches)
 			{
 				var flag = flagTempRegex.Match(match.OpponentTeam).Groups[1].Value;
-				if(!String.IsNullOrEmpty(flag))
+				if(String.IsNullOrEmpty(flag))
 					continue;
 				else if(flag.Contains("?"))
-					flag = String.Format("{{?}} {0}", flagTempRegex.Replace(match.OpponentTeam, String.Empty).Trim());
+				{
+					var name = flagTempRegex.Replace(match.OpponentTeam, String.Empty).Trim();
+					flag = String.Format("{{{{{0}|#}}}}", Simocracy.SearchCurrentFlag(name));
+				}
 				else
 				{
-
+					flag = String.Format("{{{{{0}|#}}}}", Simocracy.ReplaceOldFlag(flag));
 				}
 
 				if(dic.ContainsKey(flag))
@@ -227,6 +233,15 @@ namespace Simocracy.PwrBot
 			}
 
 			return dic;
+		}
+
+
+		public static Dictionary<string, List<FootballMatch>> SortForOpponents(MatchCollection matches)
+		{
+			var matchesList = new List<FootballMatch>(matches.Count);
+			foreach(Match match in matches)
+				matchesList.Add(new FootballMatch(match));
+			return SortForOpponents(matchesList);
 		}
 	}
 

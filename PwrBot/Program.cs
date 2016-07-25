@@ -49,19 +49,13 @@ namespace Simocracy.PwrBot
 			Page p = new Page(articleName);
 			p.Load();
 
-			var matchesRegex = Regex.Matches(p.text, matchRegexPat);
-			var matches = new List<FootballMatch>(matchesRegex.Count);
-			foreach(Match match in matchesRegex)
-				matches.Add(new FootballMatch(match));
+			var matchesRegex = Regex.Matches(p.text, matchRegexPat);	
+			Console.WriteLine(matchesRegex.Count + " Matches found");
 
-			Console.WriteLine(matches.Count + " Matches found");
-			
-			var opponents = matches.GroupBy(u => u.OpponentTeam)
-									  .Select(grp => new { OpponentTeam = grp.Key, Matches = grp.ToList() })
-									  .ToList();
-			Console.WriteLine(opponents.Count() + " Opponents found");
+			var opponents = FootballMatch.SortForOpponents(matchesRegex);
+			Console.WriteLine(opponents.Count + " Opponents found");
 			foreach(var o in opponents)
-				Console.WriteLine("{0}: {1} Matches", o.OpponentTeam, o.Matches.Count);
+				Console.WriteLine("{0}: {1} Matches", o.Key, o.Value.Count);
 		}
 
 		/// <summary>
