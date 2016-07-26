@@ -57,6 +57,17 @@ namespace Simocracy.PwrBot
 			Console.WriteLine(opponents.Count + " Opponents found");
 			foreach(var o in opponents)
 				Console.WriteLine("{0}: {1} Matches", o.Key, o.Value.Stats.Played);
+
+			var sectionText = FootballMatch.GetOpponentTable(opponents);
+
+			var editStr = String.Format("action=edit&format=xml&bot=1&title={0}&section={1}&text={2}&summary={3}&token={4}",
+				UrlEncode(articleName),
+				UrlEncode("3"),
+				UrlEncode(sectionText),
+				UrlEncode("Aktualisierung der Gegnerstatistiken"),
+				UrlEncode(site.tokens["csrftoken"]));
+			var result = site.PostDataAndGetResult(site.apiPath, editStr);
+			Console.WriteLine(result);
 		}
 
 		/// <summary>

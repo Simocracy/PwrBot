@@ -300,6 +300,30 @@ namespace Simocracy.PwrBot
 
 			return sdic;
 		}
+
+		public static string GetOpponentTable(SortedDictionary<string, FootballStatElement> opponents)
+		{
+			var text = "=== Nach Gegner ===\n" +
+				"<html><style>\n" +
+				".s {\n" +
+				"    background:#CCFFCC;\n" +
+				"}\n" +
+				".u {\n" +
+				"	background:#FFFFCC;\n" +
+				"}\n" +
+				".n {\n" +
+				"	background:#FFCCCC;\n" +
+				"}</style></html>\n" +
+				"{|class=\"wikitable sortable\" style=\"text-align:center;\"\n" +
+				"|-\n" +
+				"! Mannschaft\n" +
+				"! <abbr title=\"Spiele\">Sp.</abbr> || <abbr title=\"Siege\">S</abbr> " +
+				"|| <abbr title=\"Unentschieden\">U</abbr> || <abbr title=\"Niederlagen\">N</abbr>\n" +
+				"! <abbr title=\"Tore\">T</abbr> || <abbr title=\"Gegentore\">GT</abbr> " +
+				"|| <abbr title=\"Tordifferenz\">TD</abbr> || <abbr title=\"Punkte\">P</abbr>\n";
+
+			return text;
+		}
 	}
 
 	/// <summary>
