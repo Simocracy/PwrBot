@@ -49,6 +49,7 @@ namespace Simocracy.PwrBot
 				case "STO":
 				case "NGT":
 				case "MEY":
+				case "BOU":
 					return "KLY";
 				case "Vannekar":
 					return "GRA";
