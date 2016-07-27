@@ -10,109 +10,19 @@ namespace Simocracy.PwrBot
 {
 	class Program : Bot
 	{
-		static Site site = PwrBot.GetSite();
+		public static Site site = PwrBot.GetSite();
 
 		static void Main(string[] args)
 		{
+			FootballMatch.AnalyseFootballStats("Statistik der UNAS-Fußballnationalmannschaft der Herren", new String[] { "UNS", "VSB", "AME", "CDO", "RIV" });
+
 			//ChangeMedirienNamespace();
 			//ChangeUNSFlaggeHistorisch();
-			AnalyseFootballStats("Statistik der UNAS-Fußballnationalmannschaft der Herren", new String[] { "UNS", "VSB", "AME", "CDO", "RIV" });
 			//ReplaceOldFlagTemplates();
 			//RemoveCategories();
 
 			Console.WriteLine("Fertig!");
 			Console.ReadKey();
-		}
-
-		/// <summary>
-		/// Analysiert und wertet die Statistik einer Fußballnationalmannschaft aus
-		/// </summary>
-		static void AnalyseFootballStats(string articleName, params string[] mainTeams)
-		{
-			//var articleName = "Statistik der UNAS-Fußballnationalmannschaft der Herren";
-			//FootballMatch.MainTeam = new String[] { "UNS", "VSB", "AME", "CDO", "RIV" };
-			FootballMatch.MainTeam = mainTeams;
-			/*
-			 * Gruppen:
-			 * 1: Turnier
-			 * 2: Datum
-			 * 3: Ort
-			 * 4: Stadion
-			 * 5: Heimteam
-			 * 6: Gastteam
-			 * 7: Endergebnis (120 min)
-			 * 8: Zuschauer
-			 * 9: Wenn nicht leer: Ausverkauft
-			 * 10: Schiedsrichter
-			 */
-			var matchRegexPat = @"\|(.*[^\|\r\n]*)\s*[\r\n|\|]\|\s*([^\|\r\n]*)?\s*[\r\n|\|]\|\s*(\{\{.+\}\}[^\|\r\n]*)[\r\n\|]\|\s*([^\|\r\n]*)?\s*[\r\n\|]\|\s*('{0,3}\{\{.+\}\}[^\|\r\n]*)?\s*[\r\n\|]\|\s*('{0,3}\{\{.+\}\}[^\|\r\n]*)?\s*[\r\n\|]\|\s*[^\|]*\|\s*'''([^']*)'''[^\|\r\n]*?\s*[\r\n\|]\|\s*([\d\.]*)(\s*\(a\))?\s*[\r\n\|]\|\s*(\{\{.*\}\}[^\|\r\n]*)?";
-
-			Console.WriteLine("Lade Artikel");
-			Page p = new Page(articleName);
-			p.Load();
-
-			var sectionMatches = Regex.Matches(p.text, @"(^={1,6}(.*)?={1,6}\s*?$)", RegexOptions.Multiline);
-			int opponentSection = 0;
-			int yearSection = 0;
-			for(int i = 0; i < sectionMatches.Count; i++)
-			{
-				if(sectionMatches[i].Value.Contains("Nach Gegner"))
-					opponentSection = i + 1;
-				else if(sectionMatches[i].Value.Contains("Nach Jahr"))
-					yearSection = i + 1;
-			}
-
-			var matchesRegex = Regex.Matches(p.text, matchRegexPat);
-			var footballMatchList = FootballMatch.GetMatchList(matchesRegex);
-			Console.WriteLine(footballMatchList.Count + " Matches found");
-
-			//foreach(var match in footballMatchList)
-			//{
-			//	var newText = match.GetLowLinesWikiCode();
-			//	p.text = p.text.Replace(match.SourceCode, newText);
-			//}
-
-			//p.Save();
-
-			if(opponentSection != 0)
-			{
-				var opponents = FootballMatch.SortForOpponents(footballMatchList);
-				Console.WriteLine(opponents.Count + " Opponents found");
-				foreach(var o in opponents)
-					Console.WriteLine("{0}: {1} Matches", o.Key, o.Value.Played);
-
-				var sectionText = FootballMatch.GetOpponentTableCode(opponents);
-
-				var editStr = String.Format("action=edit&format=xml&bot=1&title={0}&section={1}&text={2}&summary={3}&token={4}",
-					UrlEncode(articleName),
-					UrlEncode(opponentSection.ToString()),
-					UrlEncode(sectionText),
-					UrlEncode("Aktualisierung der Gegnerstatistiken"),
-					UrlEncode(site.tokens["csrftoken"]));
-				var result = site.PostDataAndGetResult(site.apiPath, editStr);
-				Console.WriteLine("Opponent Result:");
-				Console.WriteLine(result);
-			}
-
-			if(yearSection != 0)
-			{
-				var years = FootballMatch.SortForYears(footballMatchList);
-				Console.WriteLine(years.Count + " Years found");
-				foreach(var o in years)
-					Console.WriteLine("{0}: {1} Matches", o.Key, o.Value.Played);
-
-				var sectionText = FootballMatch.GetYearTableCode(years);
-
-				var editStr = String.Format("action=edit&format=xml&bot=1&title={0}&section={1}&text={2}&summary={3}&token={4}",
-					UrlEncode(articleName),
-					UrlEncode(yearSection.ToString()),
-					UrlEncode(sectionText),
-					UrlEncode("Aktualisierung der Jahresstatistiken"),
-					UrlEncode(site.tokens["csrftoken"]));
-				var result = site.PostDataAndGetResult(site.apiPath, editStr);
-				Console.WriteLine("Year Result:");
-				Console.WriteLine(result);
-			}
 		}
 
 		/// <summary>
