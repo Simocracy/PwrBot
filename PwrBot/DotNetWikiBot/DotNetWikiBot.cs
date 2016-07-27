@@ -774,7 +774,7 @@ namespace DotNetWikiBot
 			string respStr = strmReader.ReadToEnd();
 			strmReader.Close();
 			webResp.Close();
-			return respStr;
+			return respStr.Trim(); // Trim(): Fix error with empty first line in xml response
 		}
 
 		/// <summary>Gets and parses results of specified custom API query.

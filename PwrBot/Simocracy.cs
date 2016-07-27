@@ -20,6 +20,7 @@ namespace Simocracy.PwrBot
 			{
 				case "ABR":
 				case "BOS":
+				case "DRB":
 					return "BSC";
 				case "ADE":
 					return "ORA";
@@ -30,6 +31,8 @@ namespace Simocracy.PwrBot
 				case "FRP":
 				case "FNS":
 				case "OKA":
+				case "NZL":
+				case "NZ":
 				case "New Halma Islands":
 				case "Neu Halmanesien":
 					return "NZL";
@@ -105,34 +108,55 @@ namespace Simocracy.PwrBot
 		{
 			switch(flag)
 			{
+				case "ADRM":
+					return "Ostmedirien";
 				case "ABR":
 				case "BOS":
 				case "BSC":
+				case "DRB":
 				case "Åbro":
 				case "Abro":
 					return "Boscoulis";
+				case "AKM":
+					return "Almoravidien";
 				case "ADE":
 				case "ORA":
 				case "AQ":
 					return "Oranienbund";
+				case "AKS":
+					return "Aksai";
 				case "AQU":
 				case "SNL":
+				case "SNL/ALT":
 				case "Aquilon":
 					return "Neusimmanien";
+				case "AMI":
+					return "Aminier";
+				case "ANT":
+					return "Antares";
 				case "AZO":
 				case "FNZ":
 				case "FRP":
 				case "FNS":
 				case "OKA":
 				case "NZL":
+				case "NZ":
 				case "New Halma Islands":
 				case "Neu Halmanesien":
+				case "Neu-Halmanesien":
 				case "Pacifica":
 					return "Neuseeland";
 				case "ASR":
 				case "BTZ":
 				case "Astraliana Royalem":
 					return "Batazion";
+				case "HEB":
+					return "Hebridan";
+				case "COA":
+				case "UAK":
+					return "Australien";
+				case "AZM":
+					return "Azmodan";
 				case "SUD":
 				case "PATA":
 				case "Sudamêrica":
@@ -142,25 +166,35 @@ namespace Simocracy.PwrBot
 				case "HYA":
 					return "Hylalien";
 				case "LAG":
+				case "RL":
 				case "RLQ":
 					return "Lago";
 				case "SEV":
 				case "GRSI":
 				case "UKSI":
 					return "Sevi Island";
+				case "EDO":
+					return "Eldorado";
 				case "STO":
 				case "NGT":
 				case "MEY":
 				case "KLY":
+				case "BOU":
 				case "Meyham":
 				case "Nagato":
 				case "Stormic":
 					return "Kelyne";
+				case "GRA":
 				case "Vannekar":
 					return "Grafenberg";
+				case "BRI":
+					return "Barnien";
+				case "BRI-AN":
+					return "Anglia";
 				case "SHI":
 				case "HIK":
 				case "KNN":
+				case "NVC":
 				case "Shigoni":
 				case "Hikari":
 					return "Kanon";
@@ -187,7 +221,11 @@ namespace Simocracy.PwrBot
 				case "CSVR":
 				case "Kurland":
 					return "Caltanien";
-				case "RCF":
+				case "KPR":
+					return "Preußen";
+				case "KRM":
+					return "Medirien";
+				case "RCH":
 				case "NFRC":
 				case "FRC":
 					return "Chryseum";
@@ -210,6 +248,9 @@ namespace Simocracy.PwrBot
 				case "EMM":
 				case "EMA":
 					return "Emmeria";
+				case "FL":
+				case "FLU":
+					return "Flugghingen";
 				case "HJH":
 				case "SKV":
 				case "NDL":
@@ -235,9 +276,42 @@ namespace Simocracy.PwrBot
 				case "RBS":
 				case "Südburg.":
 					return "Südburgund";
+				case "URS":
 				case "Arancazuelaz":
 					return "URS";
-
+				case "IRBU":
+				case "KBAB":
+					return "Alm. Brumiasta";
+				case "MAMA":
+					return "Mamba Mamba";
+				case "MAU":
+					return "Mauritanien";
+				case "MEB":
+					return "Mitteleuropa";
+				case "MEX":
+					return "Mexicali";
+				case "MIR":
+					return "Mirabella";
+				case "PKY":
+					return "Kyiv";
+				case "RIV":
+					return "Rivero";
+				case "UDV":
+				case "VRD":
+					return "Damas";
+				case "UIB":
+					return "Balearen";
+				case "USGB":
+					return "Grimbergen";
+				case "USRV":
+					return "Rivera";
+				case "WLJ":
+					return "Welanja";
+				case "YJB":
+					return "Yojahbalo";
+				case "ZUM":
+				case "ZR":
+					return "Zumanien";
 
 				default:
 					return flag;
