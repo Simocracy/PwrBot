@@ -584,30 +584,33 @@ namespace Simocracy.PwrBot
 
 		public void AddMatch(FootballMatch match)
 		{
-			Matches.Add(match);
-			if(match.HomeTeam == match.OpponentTeam)
+			if(match.Result != "X")
 			{
-				if(match.ResultHome < match.ResultAway)
-					Win++;
-				else if(match.ResultHome > match.ResultAway)
-					Lose++;
-				else
-					Drawn++;
+				Matches.Add(match);
+				if(match.HomeTeam == match.OpponentTeam)
+				{
+					if(match.ResultHome < match.ResultAway)
+						Win++;
+					else if(match.ResultHome > match.ResultAway)
+						Lose++;
+					else
+						Drawn++;
 
-				GoalsFor += match.ResultAway;
-				GoalsAgainst += match.ResultHome;
-			}
-			else
-			{
-				if(match.ResultHome > match.ResultAway)
-					Win++;
-				else if(match.ResultHome < match.ResultAway)
-					Lose++;
+					GoalsFor += match.ResultAway;
+					GoalsAgainst += match.ResultHome;
+				}
 				else
-					Drawn++;
+				{
+					if(match.ResultHome > match.ResultAway)
+						Win++;
+					else if(match.ResultHome < match.ResultAway)
+						Lose++;
+					else
+						Drawn++;
 
-				GoalsFor += match.ResultHome;
-				GoalsAgainst += match.ResultAway;
+					GoalsFor += match.ResultHome;
+					GoalsAgainst += match.ResultAway;
+				}
 			}
 		}
 
@@ -622,7 +625,7 @@ namespace Simocracy.PwrBot
 		public string GetYearWikicode()
 		{
 			return String.Format("|-\n| '''{0}''' || {1} || {2} || {3} || {4} || {5} || {6} || {7} || {8}",
-				Year, Played, Win, Drawn, Lose, GoalsFor, GoalsAgainst,
+				(Year > 1930) ? Year.ToString() : "N/A", Played, Win, Drawn, Lose, GoalsFor, GoalsAgainst,
 				GoalDiff.ToString("+0;-0;+0"), Points);
 		}
 	}
