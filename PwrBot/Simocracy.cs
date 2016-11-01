@@ -28,13 +28,15 @@ namespace Simocracy.PwrBot
 					return "SNL";
 				case "AZO":
 				case "FNZ":
+				case "NHI":
 				case "FRP":
 				case "FNS":
 				case "OKA":
-				case "NZL":
 				case "NZ":
 				case "New Halma Islands":
 				case "Neu Halmanesien":
+				case "Neu-Halmanesien":
+				case "Pacifica":
 					return "NZL";
 				case "ASR":
 					return "BTZ";
@@ -137,6 +139,7 @@ namespace Simocracy.PwrBot
 					return "Antares";
 				case "AZO":
 				case "FNZ":
+				case "NHI":
 				case "FRP":
 				case "FNS":
 				case "OKA":
