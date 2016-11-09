@@ -369,8 +369,9 @@ namespace Simocracy.PwrBot
 				if(!(MainTeam.Contains("RIV") && opp.Value.Flag.Contains("RIV")))
 					text = String.Format("{0}\n{1}", text, opp.Value.GetOpponentWikicode());
 			}
-
-			text = String.Format("{0}\n{1}", text, "|}");
+			
+			text = String.Format("{0}\n{1}\n<sup>Stand: <drechner eing=\"j\" day=\"j\">{2}</drechner></sup>",
+				text, "|}", DateTime.Now.ToString("yyyy-MM-dd HH:mm"));
 
 			return text;
 		}
@@ -433,8 +434,10 @@ namespace Simocracy.PwrBot
 			var played = allWon + allDrawn + allLose;
 			var allGoalDiff = (allGoalsFor - allGoalsAgainst).ToString("+0;-0;+0");
 			var points = allWon * 3 + allDrawn;
-			text = String.Format("{0}\n|-\n! Ges. || {1} || {2} || {3} || {4} || {5} || {6} || {7} || {8}\n|}}",
-				text, played, allWon, allDrawn, allLose, allGoalsFor, allGoalsAgainst, allGoalDiff, points);
+			text = String.Format("{0}\n|-\n! Ges. || {1} || {2} || {3} || {4} || {5} || {6} || {7} || {8}\n|}}" +
+					"\n<sup>Stand: <drechner eing=\"j\" day=\"j\">{2}</drechner></sup>",
+				text, played, allWon, allDrawn, allLose, allGoalsFor, allGoalsAgainst, allGoalDiff, points,
+				DateTime.Now.ToString("yyyy-MM-dd HH:mm"));
 
 			return text;
 		}
