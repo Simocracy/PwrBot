@@ -97,6 +97,9 @@ namespace Simocracy.PwrBot
 				case "Nuestra Senora":
 				case "Simultanien":
 					return "NUS";
+				case "Azoren":
+					return "KBAZ";
+
 				default:
 					return flag;
 			}
@@ -316,6 +319,8 @@ namespace Simocracy.PwrBot
 				case "ZUM":
 				case "ZR":
 					return "Zumanien";
+				case "KBAZ":
+					return "Azoren";
 
 				default:
 					return flag;
