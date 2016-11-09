@@ -435,7 +435,7 @@ namespace Simocracy.PwrBot
 			var allGoalDiff = (allGoalsFor - allGoalsAgainst).ToString("+0;-0;+0");
 			var points = allWon * 3 + allDrawn;
 			text = String.Format("{0}\n|-\n! Ges. || {1} || {2} || {3} || {4} || {5} || {6} || {7} || {8}\n|}}" +
-					"\n<sup>Stand: <drechner eing=\"j\" day=\"j\">{2}</drechner></sup>",
+					"\n<sup>Stand: <drechner eing=\"j\" day=\"j\">{9}</drechner></sup>",
 				text, played, allWon, allDrawn, allLose, allGoalsFor, allGoalsAgainst, allGoalDiff, points,
 				DateTime.Now.ToString("yyyy-MM-dd HH:mm"));
 
