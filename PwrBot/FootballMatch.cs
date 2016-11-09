@@ -199,74 +199,74 @@ namespace Simocracy.PwrBot
 			IsSOldOut = !String.IsNullOrEmpty(soldOut);
 		}
 
-		public string GetLowLinesWikiCode()
-		{
-			var regexMatch = Regex.Match(SourceCode, @"\|(.*[^\|\r\n]*)\s*[\r\n|\|]\|\s*([^\|\r\n]*)?\s*[\r\n|\|]\|\s*(\{\{.+\}\}[^\|\r\n]*)[\r\n\|]\|\s*([^\|\r\n]*)?\s*[\r\n\|]\|\s*('{0,3}(\{\{.+\}\})[^\|\r\n]*)?\s*[\r\n\|]\|\s*('{0,3}(\{\{.+\}\})[^\|\r\n]*)?\s*[\r\n\|]\|\s*[^\|]*\|\s*'''((\d+):(\d+))?([^']*)'''(\s*(<br>)?\s*([^\|\r\n]*))?\s*[\r\n\|]\|\s*([\d\.]*)(\s*\(a\))?\s*[\r\n\|]\|\s*(\{\{.*\}\}[^\|\r\n]*)?");
-			var tournament = regexMatch.Groups[1].Value.Trim();
-			var date = regexMatch.Groups[2].Value.Trim();
-			var city = regexMatch.Groups[3].Value.Trim();
-			var stadium = regexMatch.Groups[4].Value.Trim();
-			var referee = regexMatch.Groups[18].Value.Trim();
+		//public string GetLowLinesWikiCode()
+		//{
+		//	var regexMatch = Regex.Match(SourceCode, @"\|(.*[^\|\r\n]*)\s*[\r\n|\|]\|\s*([^\|\r\n]*)?\s*[\r\n|\|]\|\s*(\{\{.+\}\}[^\|\r\n]*)[\r\n\|]\|\s*([^\|\r\n]*)?\s*[\r\n\|]\|\s*('{0,3}(\{\{.+\}\})[^\|\r\n]*)?\s*[\r\n\|]\|\s*('{0,3}(\{\{.+\}\})[^\|\r\n]*)?\s*[\r\n\|]\|\s*[^\|]*\|\s*'''((\d+):(\d+))?([^']*)'''(\s*(<br>)?\s*([^\|\r\n]*))?\s*[\r\n\|]\|\s*([\d\.]*)(\s*\(a\))?\s*[\r\n\|]\|\s*(\{\{.*\}\}[^\|\r\n]*)?");
+		//	var tournament = regexMatch.Groups[1].Value.Trim();
+		//	var date = regexMatch.Groups[2].Value.Trim();
+		//	var city = regexMatch.Groups[3].Value.Trim();
+		//	var stadium = regexMatch.Groups[4].Value.Trim();
+		//	var referee = regexMatch.Groups[18].Value.Trim();
 			
-			var specs = regexMatch.Groups[16].Value.Trim();
-			if(!String.IsNullOrEmpty(regexMatch.Groups[17].Value))
-				specs += " " + regexMatch.Groups[17].Value.Trim();
+		//	var specs = regexMatch.Groups[16].Value.Trim();
+		//	if(!String.IsNullOrEmpty(regexMatch.Groups[17].Value))
+		//		specs += " " + regexMatch.Groups[17].Value.Trim();
 
-			int resultHome = -1;
-			int resultAway = -1;
-			var hasRes = Int32.TryParse(regexMatch.Groups[10].Value, out resultHome);
-			if(hasRes)
-				hasRes = Int32.TryParse(regexMatch.Groups[11].Value, out resultAway);
-			var ResComment = regexMatch.Groups[12].Value.Trim();
-			var halfRes = regexMatch.Groups[13].Value.TrimEnd();
-			string result = "'''";
-			if(hasRes)
-			{
-				result += resultHome + ":" + resultAway;
-				if(!String.IsNullOrEmpty(ResComment))
-					result += " " + ResComment;
-				result += "'''" + halfRes;
-			}
-			else
-			{
-				result += ResComment + "'''";
-			}
+		//	int resultHome = -1;
+		//	int resultAway = -1;
+		//	var hasRes = Int32.TryParse(regexMatch.Groups[10].Value, out resultHome);
+		//	if(hasRes)
+		//		hasRes = Int32.TryParse(regexMatch.Groups[11].Value, out resultAway);
+		//	var ResComment = regexMatch.Groups[12].Value.Trim();
+		//	var halfRes = regexMatch.Groups[13].Value.TrimEnd();
+		//	string result = "'''";
+		//	if(hasRes)
+		//	{
+		//		result += resultHome + ":" + resultAway;
+		//		if(!String.IsNullOrEmpty(ResComment))
+		//			result += " " + ResComment;
+		//		result += "'''" + halfRes;
+		//	}
+		//	else
+		//	{
+		//		result += ResComment + "'''";
+		//	}
 
-			string homeTeam = regexMatch.Groups[6].Value.Replace("'", "").Trim();
-			if(homeTeam.Contains("?"))
-			{
-				homeTeam = regexMatch.Groups[5].Value.Replace("'", "").Trim();
-			}
-			else if(!homeTeam.Contains("#"))
-			{
-				homeTeam = homeTeam.Insert(homeTeam.Length - 2, "|#");
-			}
-			if(resultHome > resultAway)
-				homeTeam = "'''" + homeTeam + "'''";
+		//	string homeTeam = regexMatch.Groups[6].Value.Replace("'", "").Trim();
+		//	if(homeTeam.Contains("?"))
+		//	{
+		//		homeTeam = regexMatch.Groups[5].Value.Replace("'", "").Trim();
+		//	}
+		//	else if(!homeTeam.Contains("#"))
+		//	{
+		//		homeTeam = homeTeam.Insert(homeTeam.Length - 2, "|#");
+		//	}
+		//	if(resultHome > resultAway)
+		//		homeTeam = "'''" + homeTeam + "'''";
 
-			string awayTeam = regexMatch.Groups[8].Value.Replace("'", "").Trim();
-			if(awayTeam.Contains("?"))
-			{
-				awayTeam = regexMatch.Groups[7].Value.Replace("'", "").Trim();
-			}
-			else if(!awayTeam.Contains("#"))
-			{
-				awayTeam = awayTeam.Insert(awayTeam.Length - 2, "|#");
-			}
-			if(resultAway > resultHome)
-				awayTeam = "'''" + awayTeam + "'''";
+		//	string awayTeam = regexMatch.Groups[8].Value.Replace("'", "").Trim();
+		//	if(awayTeam.Contains("?"))
+		//	{
+		//		awayTeam = regexMatch.Groups[7].Value.Replace("'", "").Trim();
+		//	}
+		//	else if(!awayTeam.Contains("#"))
+		//	{
+		//		awayTeam = awayTeam.Insert(awayTeam.Length - 2, "|#");
+		//	}
+		//	if(resultAway > resultHome)
+		//		awayTeam = "'''" + awayTeam + "'''";
 
-			return String.Format("| {0}\n| {1} || {2} || {3}\n| {4} || {5}\n|style=\"text-align:center;\"| {6}\n| {7} || {8}\n",
-				tournament, // Turnier
-				date, // Datum
-				city, // Ort
-				stadium, // Stadion
-				homeTeam, // Heim
-				awayTeam, // Aus
-				result, // Ergebnis
-				specs, // Zuschauer
-				referee); // Schiri
-		}
+		//	return String.Format("| {0}\n| {1} || {2} || {3}\n| {4} || {5}\n|style=\"text-align:center;\"| {6}\n| {7} || {8}\n",
+		//		tournament, // Turnier
+		//		date, // Datum
+		//		city, // Ort
+		//		stadium, // Stadion
+		//		homeTeam, // Heim
+		//		awayTeam, // Aus
+		//		result, // Ergebnis
+		//		specs, // Zuschauer
+		//		referee); // Schiri
+		//}
 
 		/// <summary>
 		/// Parsed die Matches
