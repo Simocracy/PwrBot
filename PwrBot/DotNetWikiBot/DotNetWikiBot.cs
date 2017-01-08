@@ -13,7 +13,6 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Collections;
-using System.Collections.Specialized;
 using System.Collections.Generic;
 using System.Net;
 using System.Xml;
@@ -21,8 +20,6 @@ using System.Xml.XPath;
 using System.Web;
 using System.Linq;
 using System.Xml.Linq;
-using System.Security;
-using System.Security.Permissions;
 
 namespace DotNetWikiBot
 {

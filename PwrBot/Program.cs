@@ -1,25 +1,34 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Diagnostics;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using DotNetWikiBot;
 
 namespace Simocracy.PwrBot
 {
 	class Program : Bot
 	{
-		public static Site site = PwrBot.GetSite();
+		public static Site Site = PwrBot.GetSite();
 
 		static void Main(string[] args)
 		{
-			FootballMatch.AnalyseFootballStats("Statistik der UNAS-Fußballnationalmannschaft der Herren", new String[] { "UNS", "VSB", "AME", "CDO", "RIV" });
 
-			//ChangeMedirienNamespace();
-			//ChangeUNSFlaggeHistorisch();
-			//ReplaceOldFlagTemplates();
-			//RemoveCategories();
+			Console.WriteLine("Start");
+
+			try
+			{
+				FootballMatch.AnalyseFootballStats("Statistik der UNAS-Fußballnationalmannschaft der Herren",
+					new String[] {"UNS", "VSB", "AME", "CDO", "RIV"});
+
+				//ChangeMedirienNamespace();
+				//ChangeUNSFlaggeHistorisch();
+				//ReplaceOldFlagTemplates();
+				//RemoveCategories();
+			}
+			catch(Exception e)
+			{
+				Console.WriteLine(e);
+				Trace.WriteLine(e);
+			}
 
 			Console.WriteLine("Fertig!");
 			Console.ReadKey();
@@ -34,7 +43,7 @@ namespace Simocracy.PwrBot
 			var newTempReplace = @"{{Flaggenvorlage|$1|$2|{{{1|}}}|{{{b|}}}|{{{h|}}}|{{{2|}}}}}";
 
 			Console.WriteLine("Ändere Flaggenvorlagen");
-			var pl = new PageList(site);
+			var pl = new PageList(Site);
 			pl.FillAllFromCategory("Kategorie:Flaggenvorlage");
 			Console.WriteLine("Vorlagenanzahl: {0}", pl.Count());
 
@@ -62,7 +71,7 @@ namespace Simocracy.PwrBot
 
 			Console.WriteLine("Ändere Einbindung historischer Rivera-Flaggen");
 
-			var pl = new PageList(site);
+			var pl = new PageList(Site);
 			//pl.FillFromLinksToPage(tempUNS);
 			pl.FillFromTransclusionsOfPage(tempUNS);
 			Console.WriteLine("Seitenanzahl: " + pl.Count());
@@ -104,7 +113,7 @@ namespace Simocracy.PwrBot
 						var input = Console.ReadKey();
 						if(input.KeyChar == 'o')
 						{
-							System.Diagnostics.Process.Start(site.address + "/" + p.title);
+							System.Diagnostics.Process.Start(Site.address + "/" + p.title);
 							Console.Write(" ");
 							input = Console.ReadKey();
 						}
@@ -138,7 +147,7 @@ namespace Simocracy.PwrBot
 			var oldCat = "Kategorie:Reform";
 			Console.WriteLine("Lösche Kategorien von " + oldCat);
 
-			PageList pl = new PageList(site);
+			PageList pl = new PageList(Site);
 			pl.FillAllFromCategory(oldCat);
 			Console.WriteLine("Seitenanzahl: " + pl.Count());
 			foreach(var p in pl.pages)
@@ -158,7 +167,7 @@ namespace Simocracy.PwrBot
 			var newCat = "Kategorie:Almoravidien";
 			Console.WriteLine("Ändere Kategorien von " + oldCat + " zu " + newCat);
 
-			PageList pl = new PageList(site);
+			PageList pl = new PageList(Site);
 			pl.FillAllFromCategory(oldCat);
 			Console.WriteLine("Seitenanzahl: " + pl.Count());
 			foreach(var p in pl.pages)
