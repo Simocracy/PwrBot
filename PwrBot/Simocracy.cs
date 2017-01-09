@@ -63,6 +63,7 @@
 				case "AGM":
 					return "NLL";
 				case "RUQ":
+				case "SOW":
 					return "KSW";
 				case "KUR":
 					return "CSVR";
@@ -216,6 +217,7 @@
 					return "Neulettland";
 				case "RUQ":
 				case "KSW":
+				case "SOW":
 				case "Ruquia":
 					return "Sowekien";
 				case "KUR":
