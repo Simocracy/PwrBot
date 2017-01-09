@@ -617,17 +617,15 @@ namespace Simocracy.PwrBot
 
 		public string GetOpponentWikicode()
 		{
-			return String.Format("|- class=\"{0}\"\n| style=\"text-align:left;\" | {1}\n| {2} || {3} || {4} || {5} || {6} || {7} || {8} || {9}",
+			return String.Format("|- class=\"{0}\"\n| style=\"text-align:left;\" | {1}\n| {2} || {3} || {4} || {5} || {6} || {7} || {8:+0;-0;+0} || {9}",
 				(Balance > 0) ? "s" : (Balance < 0) ? "n" : "u",
-				Flag, Played, Win, Drawn, Lose, GoalsFor, GoalsAgainst,
-				GoalDiff.ToString("+0;-0;+0"), Points);
+				Flag, Played, Win, Drawn, Lose, GoalsFor, GoalsAgainst, GoalDiff, Points);
 		}
 
 		public string GetYearWikicode()
 		{
-			return String.Format("|-\n| '''{0}''' || {1} || {2} || {3} || {4} || {5} || {6} || {7} || {8}",
-				(Year > 1930) ? Year.ToString() : "N/A", Played, Win, Drawn, Lose, GoalsFor, GoalsAgainst,
-				GoalDiff.ToString("+0;-0;+0"), Points);
+			return String.Format("|-\n| '''{0}''' || {1} || {2} || {3} || {4} || {5} || {6} || {7:+0;-0;+0} || {8}",
+				(Year > 1930) ? Year.ToString() : "N/A", Played, Win, Drawn, Lose, GoalsFor, GoalsAgainst, GoalDiff, Points);
 		}
 	}
 }
