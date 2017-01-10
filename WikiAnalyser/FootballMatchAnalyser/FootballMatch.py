@@ -1,8 +1,9 @@
+import re
 from datetime import datetime
 
-from FootballMatchAnalyser.FootballStatElement import FootballStatElement
+from FootballMatchAnalyser import FootballStatElement
 
-class FootbalMatch:
+class FootballMatch:
 	"""
 	Fußballspiel
 	"""
@@ -22,18 +23,18 @@ class FootbalMatch:
 	@property
 	def Tournament(self):
 		return self._Tournament
-	@property.setter
+	@Tournament.setter
 	def Tournament(self, value):
 		s = value.strip()
 		self._Tournament = s.replace("-", "") if (len(s) < 3) else s
 
-	Date = ""
+	Date = datetime.min
 
 	_City = ""
 	@property
 	def City(self):
 		return self._City
-	@property.setter
+	@City.setter
 	def City(self, value):
 		self._City = value.strip()
 
@@ -41,7 +42,7 @@ class FootbalMatch:
 	@property
 	def Stadium(self):
 		return self._Stadium
-	@property.setter
+	@Stadium.setter
 	def Stadium(self, value):
 		self._Stadium = value.strip()
 
@@ -52,7 +53,7 @@ class FootbalMatch:
 		Inkl. Flaggenkürzel
 		"""
 		return self._HomeTeam
-	@property.setter
+	@HomeTeam.setter
 	def HomeTeam(self, value):
 		self._HomeTeam = value.strip().replace("'", "")
 
@@ -63,7 +64,7 @@ class FootbalMatch:
 		Inkl. Flaggenkürzel
 		"""
 		return self._AwayTeam
-	@property.setter
+	@AwayTeam.setter
 	def AwayTeam(self, value):
 		self._AwayTeam = value.strip().replace("'", "")
 		
@@ -107,7 +108,7 @@ class FootbalMatch:
 		Inkl. Flaggenkürzel
 		"""
 		return self._Referee
-	@property.setter
+	@Referee.setter
 	def Referee(self, value):
 		self._Referee = value.strip().replace("'", "")
 
@@ -117,31 +118,55 @@ class FootbalMatch:
 	SourceCode = ""
 
 	def __init__(self, tournament, date, city, stadium, homeTeam, awayTeam, result, spectators, soldOut, referee, source):
-			Tournament = tournament;
-			SetDate(date);
-			City = city;
-			Stadium = stadium;
-			HomeTeam = homeTeam;
-			AwayTeam = awayTeam;
-			SetResults(result);
-			SetSpectators(spectators);
-			SetIsSoldOut(soldOut);
-			Referee = referee;
-			SourceCode = source;
+			self.Tournament = tournament;
+			self.SetDate(date);
+			self.City = city;
+			self.Stadium = stadium;
+			self.HomeTeam = homeTeam;
+			self.AwayTeam = awayTeam;
+			self.SetResults(result);
+			self.SetSpectators(spectators);
+			self.SetIsSoldOut(soldOut);
+			self.Referee = referee;
+			self.SourceCode = source;
 
 	def SetDate(self, date):
-		if len(date.strip()) > 0:
-			Date = datetime.strptime(date, '%b %d %Y %I:%M%p')
+		try:
+			exactDatePattern = r"((\d{1,2})\.)?((\d{1,2})\.)?(\d{2,4})"
+			exactDateMatch = re.match(exactDatePattern, date)
+			if not exactDateMatch is None:
+				matchStr = exactDateMatch.group(0)
+				if len(exactDateMatch.group(5)) < 4:
+					matchStr = matchStr[:len(matchStr)-2] + "20" + matchStr[len(matchStr)-2:]
+				if exactDateMatch.group(2) is None:
+					datepstr = "%Y"
+				elif exactDateMatch.group(4) is None:
+					datepstr = "%m.%Y"
+				else:
+					datepstr = "%d.%m.%Y"
+				parsedDate = datetime.strptime(matchStr, datepstr)
+				self.Date = parsedDate
+
+		except:
+			self.Date = datetime.min
+		
 
 	def SetResults(self, result):
-		return 0
+		resPattern = r"(\d+):(\d+)"
+		resMatch = re.match(resPattern, result)
+		if not resMatch is None:
+			self.ResultHome = int(resMatch.group(1))
+			self.ResultAway = int(resMatch.group(2))
+		else:
+			self.ResultHome = -1;
+			self.ResultAway = -1;
 
 	def SetSpectators(self, spectators):
 		try:
 			sp = spectators.replace(".","").replace("'","").replace(" ","")
-			Spectators = int(sp)
+			self.Spectators = int(sp)
 		except:
-			Spectators = 0
+			self.Spectators = 0
 
 	def SetIsSoldOut(self, soldOut):
-		IsSoldOut = len(soldOut.strip()) > 0
+		self.IsSoldOut = len(soldOut.strip()) > 0

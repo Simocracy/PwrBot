@@ -1,6 +1,4 @@
-from FootballMatchAnalyser.FootballMatch import FootbalMatch
-
-class FootballStatElement(object):
+class FootballStatElement:
 	"""Gesamtstatistik für einen Gegner"""
 
 	Name = ""
@@ -19,7 +17,7 @@ class FootballStatElement(object):
 	Lose = 0
 	GoalsFor = 0
 	GoalsAgainst = 0
-	GoalsDIff
+	GoalsDIff = 0
 
 	@property
 	def GoalsDiff(self):
