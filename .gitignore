@@ -244,5 +244,8 @@ ModelManifest.xml
 # FAKE - F# Make
 .fake/
 
-# Password file for wiki login
+# PTVS Python binaries
+*.pyc
+
+# Password files for wiki login
 /PwrBot/PwrBot.cs
