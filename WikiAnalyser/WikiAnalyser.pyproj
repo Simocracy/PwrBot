@@ -33,12 +33,9 @@
     <Compile Include="FootballMatchAnalyser\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Simocracy\datum.py" />
     <Compile Include="Simocracy\FlagConverter.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Simocracy\statemachine.py" />
-    <Compile Include="Simocracy\wiki.py" />
     <Compile Include="Simocracy\__init__.py">
       <SubType>Code</SubType>
     </Compile>
