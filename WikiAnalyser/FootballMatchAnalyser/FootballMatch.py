@@ -1,18 +1,20 @@
 import re
-from datetime import datetime
 
-from FootballMatchAnalyser import FootballStatElement
+from datetime import datetime
+from collections import OrderedDict
+
+from FootballMatchAnalyser.FootballStatElement import FootballStatElement
+from Simocracy import FlagConverter
 
 class FootballMatch:
 	"""
 	Fußballspiel
 	"""
-
-
+	
 	"""
 	Team, dessen Statistik erstellt wird, Basierend auf FLAGGENKÜRZEL
 	"""
-	MainTeam = ["UNAS"]
+	MainTeam = ["UNS"]
 
 	"""
 	Liste der Nachfolgerstaaten, FLAGGENKÜRZEL, Schema Vorgänger -> Aktueller Staat (bzw. Nachfolger)
@@ -73,10 +75,10 @@ class FootballMatch:
 		"""
 		Gegnerteam für Sortierung nach Gegner
 		"""
-		for s in MainTeam:
-			if s in AwayTeam:
-				return HomeTeam
-			return AwayTeam
+		for s in self.MainTeam:
+			if s in self.AwayTeam:
+				return self.HomeTeam
+			return self.AwayTeam
 		
 	"""
 	-1 wenn kein Spielergebnis
@@ -88,15 +90,15 @@ class FootballMatch:
 	"""
 	ResultAway = ""
 
-	"""
-	Vollständiges Spielergebnis
-	"""
 	@property
 	def Result(self):
-		if (ResultHome < 0 or ResultAway < 0):
+		"""
+		Vollständiges Spielergebnis
+		"""
+		if (self.ResultHome < 0 or self.ResultAway < 0):
 			return "X"
 		else:
-			return ResultHome + ":" + ResultAway
+			return str(self.ResultHome) + ":" + str(self.ResultAway)
 
 	Spectators = 0
 	IsSoldOut = False
@@ -170,3 +172,54 @@ class FootballMatch:
 
 	def SetIsSoldOut(self, soldOut):
 		self.IsSoldOut = len(soldOut.strip()) > 0
+
+	@staticmethod
+	def GetMatchList(matches):
+		"""
+		Parsed die Matches
+		matches (Match-Collection): Matches
+		return: Liste mit FootballMatch
+		"""
+		matchList = []
+		for match in matches:
+			matchList.append(match)
+		return matchList
+	
+	@staticmethod
+	def SortForOpponents(matches):
+		"""
+		Analysiert die Statistik und gibt diese nach Gegnern gruppiert und alphabetisch sortiert zurück
+		matches (Enumerable<FootballMatch>): Spiele
+		return (Dictionary<string, FootballStatElement>): Statistik
+		"""
+		dic = {}
+		flagTempRegex = re.compile(r"\{\{([^\|\}]*)(\|([^\}\|]*))?(\|([^\}\|]*))?\}\}")
+		for match in matches:
+			flagMatch = flagTempRegex.match(match.OpponentTeam)
+
+			flag = flagMatch.group(1)
+			if len(flag.strip()) < 1:
+				continue
+
+			# {{GRA|Grafenberg}} -> Grafenberg
+			if not flagMatch.group(3) is None and not "=" in flagMatch.group(3) and re.match(r"\d+", flagMatch.group(3)) is None:
+				name = flagMatch.group(3)
+			# {{GRA|b=20|Grafenberg}} -> Grafenberg
+			elif not flagMatch.group(5) is None and not "=" in flagMatch.group(5) and re.match(r"\d+", flagMatch.group(5)) is None:
+				name = flagMatch.group(5)
+			# {{GRA}} -> "" -> {{GRA}} Grafenberg -> Grafenberg
+			else:
+				name = flagTempRegex.sub("", match.OpponentTeam).strip()
+
+			isNoneFlag = "?" in flag
+			isDummyName = "#" in name
+			flag = FlagConverter.GetFlag(name if isNoneFlag else flag)
+			name = FlagConverter.GetStateName(flag if isDummyName else name)
+
+			if name not in dic:
+				fse = FootballStatElement(name, flag)
+				dic[name] = fse
+			dic[name].AddMatch(match)
+
+		sdic = OrderedDict(sorted(dic.items()))
+		return sdic
