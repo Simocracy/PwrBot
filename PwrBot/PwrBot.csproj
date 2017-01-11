@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="DotNetWikiBot\DotNetWikiBot.cs" />
     <Compile Include="FootballMatch.cs" />
+    <Compile Include="FootballStatElement.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PwrBot.cs" />

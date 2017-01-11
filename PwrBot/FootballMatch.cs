@@ -187,7 +187,7 @@ namespace Simocracy.PwrBot
 
 		private void SetSpectators(string spectators)
 		{
-			int specs = 0;
+			int specs;
 			Int32.TryParse(spectators, NumberStyles.Number, CultureInfo.CurrentCulture, out specs);
 			Specators = specs;
 		}
@@ -299,14 +299,17 @@ namespace Simocracy.PwrBot
 
 				int pxValue;
 				string name;
+				// {{GRA|Grafenberg}} -> Grafenberg
 				if(flagMatch.Groups[3].Success && !flagMatch.Groups[3].Value.Contains("=") && !Int32.TryParse(flagMatch.Groups[3].Value, out pxValue))
 				{
 					name = flagMatch.Groups[3].Value;
 				}
+				// {{GRA|b=20|Grafenberg}} -> Grafenberg
 				else if(flagMatch.Groups[5].Success && !flagMatch.Groups[5].Value.Contains("=") && !Int32.TryParse(flagMatch.Groups[5].Value, out pxValue))
 				{
 					name = flagMatch.Groups[5].Value;
 				}
+				// {{GRA}} -> "" -> {{GRA}} Grafenberg -> Grafenberg
 				else
 				{
 					name = flagTempRegex.Replace(match.OpponentTeam, String.Empty).Trim();
@@ -335,7 +338,7 @@ namespace Simocracy.PwrBot
 		/// <summary>
 		/// Ausgabe der Bilanz von <see cref="MainTeam"/> nach Gegnern
 		/// </summary>
-		/// <param name="opponents">Bilanz als <see cref="SortedDictionary{string, FootballStatElement}"/></param>
+		/// <param name="opponents">Bilanz als <see cref="SortedDictionary{String, FootballStatElement}"/></param>
 		/// <returns>Bilanz als Wikicode</returns>
 		public static string GetOpponentTableCode(SortedDictionary<string, FootballStatElement> opponents)
 		{
@@ -447,9 +450,7 @@ namespace Simocracy.PwrBot
 		/// <param name="mainTeams">Mainteams, auf die ausgewertet werden soll</param>
 		public static void AnalyseFootballStats(string articleName, params string[] mainTeams)
 		{
-			//var articleName = "Statistik der UNAS-Fußballnationalmannschaft der Herren";
-			//FootballMatch.MainTeam = new String[] { "UNS", "VSB", "AME", "CDO", "RIV" };
-			FootballMatch.MainTeam = mainTeams;
+			MainTeam = mainTeams;
 			/*
 			 * Gruppen:
 			 * 1: Turnier
@@ -481,7 +482,7 @@ namespace Simocracy.PwrBot
 			}
 
 			var matchesRegex = Regex.Matches(p.text, matchRegexPat);
-			var footballMatchList = FootballMatch.GetMatchList(matchesRegex);
+			var footballMatchList = GetMatchList(matchesRegex);
 			Console.WriteLine(footballMatchList.Count + " Matches found");
 
 			//foreach(var match in footballMatchList)
@@ -494,12 +495,12 @@ namespace Simocracy.PwrBot
 
 			if(opponentSection != 0)
 			{
-				var opponents = FootballMatch.SortForOpponents(footballMatchList);
+				var opponents = SortForOpponents(footballMatchList);
 				Console.WriteLine(opponents.Count + " Opponents found");
 				foreach(var o in opponents)
 					Console.WriteLine("{0}: {1} Matches", o.Key, o.Value.Played);
 
-				var sectionText = FootballMatch.GetOpponentTableCode(opponents);
+				var sectionText = GetOpponentTableCode(opponents);
 
 				var editStr = String.Format("action=edit&format=xml&bot=1&title={0}&section={1}&text={2}&summary={3}&token={4}",
 					Bot.UrlEncode(articleName),
@@ -531,101 +532,6 @@ namespace Simocracy.PwrBot
 				Console.WriteLine("Year Result:");
 				Console.WriteLine(result);
 			}
-		}
-	}
-
-	/// <summary>
-	/// Gesamtstatistik für einen Gegner
-	/// </summary>
-	[DebuggerDisplay("Name={Name}, Flag={Flag}, Matches={Matches.Count}, WDL={Win}-{Drawn}-{Lose}, Goals={GoalsFor}-{GoalsAgainst}")]
-	public class FootballStatElement
-	{
-		/// <summary>
-		/// Staatsname
-		/// </summary>
-		public string Name { get; set; } = String.Empty;
-		public string Flag { get; set; } = String.Empty;
-		/// <summary>
-		/// Staatsname
-		/// </summary>
-		public int Year { get; set; } = 0;
-		/// <summary>
-		/// Matchliste
-		/// </summary>
-		public List<FootballMatch> Matches { get; set; } = new List<FootballMatch>();
-		/// <summary>
-		/// Kommentar am Anfang
-		/// </summary>
-		public string PreComment { get; set; } = String.Empty;
-		/// <summary>
-		/// Kommentar am Ende
-		/// </summary>
-		public string PostComment { get; set; } = String.Empty;
-
-		public int Played { get { return Win + Drawn + Lose; } }
-		public int Win { get; private set; } = 0;
-		public int Drawn { get; private set; } = 0;
-		public int Lose { get; private set; } = 0;
-		public int GoalsFor { get; private set; } = 0;
-		public int GoalsAgainst { get; private set; } = 0;
-		public int GoalDiff { get { return GoalsFor - GoalsAgainst; } }
-		public int Points { get { return Win * 3 + Drawn; } }
-		public int Balance
-		{
-			get
-			{
-				if(Win > Lose)
-					return 1;
-				else if(Win < Lose)
-					return -1;
-				else
-					return 0;
-			}
-		}
-
-		public void AddMatch(FootballMatch match)
-		{
-			if(match.Result != "X")
-			{
-				Matches.Add(match);
-				if(match.HomeTeam == match.OpponentTeam)
-				{
-					if(match.ResultHome < match.ResultAway)
-						Win++;
-					else if(match.ResultHome > match.ResultAway)
-						Lose++;
-					else
-						Drawn++;
-
-					GoalsFor += match.ResultAway;
-					GoalsAgainst += match.ResultHome;
-				}
-				else
-				{
-					if(match.ResultHome > match.ResultAway)
-						Win++;
-					else if(match.ResultHome < match.ResultAway)
-						Lose++;
-					else
-						Drawn++;
-
-					GoalsFor += match.ResultHome;
-					GoalsAgainst += match.ResultAway;
-				}
-			}
-		}
-
-		public string GetOpponentWikicode()
-		{
-			return String.Format("|- class=\"{0}\"\n| style=\"text-align:left;\" | {1}\n| {2} || {3} || {4} || {5} || {6} || {7} || {8:+0;-0;+0} || {9}",
-				(Balance > 0) ? "s" : (Balance < 0) ? "n" : "u",
-				Flag, Played, Win, Drawn, Lose, GoalsFor, GoalsAgainst, GoalDiff, Points);
-		}
-
-		public string GetYearWikicode()
-		{
-			return String.Format("|-\n| '''{0}''' || {1} || {2} || {3} || {4} || {5} || {6} || {7:+0;-0;+0} || {8}",
-				(Year > 1930) ? Year.ToString() : "N/A", Played, Win, Drawn, Lose, GoalsFor, GoalsAgainst, GoalDiff, Points);
 		}
 	}
 }
