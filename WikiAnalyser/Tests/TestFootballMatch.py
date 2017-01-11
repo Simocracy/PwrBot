@@ -23,5 +23,13 @@ class Test_FootballMatch(unittest.TestCase):
 		match = FootballMatch(defStr, datestr, defStr, defStr, defStr, defStr, defStr, defStr, defStr, defStr, defStr)
 		self.assertEquals(datetime.strptime("2044", "%Y"), match.Date)
 
+	def test_TestGrouping1(self):
+		l = [FootballMatch("", "", "", "", "{{UNS}} UNAS", "{{GRA|#}}", "1:1", "", "", "", ""),
+			FootballMatch("", "", "", "", "{{GRA}} Grafenberg", "{{UNS|#}}", "1:1", "", "", "", ""),
+			FootballMatch("", "", "", "", "{{?}} New Halma Islands", "{{UNS}} UNAS", "1:1", "", "", "", "")]
+		grp = FootballMatch.SortForOpponents(l)
+		self.assertEquals(2, grp["Grafenberg"].Played)
+		self.assertEquals(1, grp["Neuseeland"].Played)
+
 if __name__ == '__main__':
 	unittest.main()

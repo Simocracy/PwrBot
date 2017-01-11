@@ -66,14 +66,19 @@ namespace PwrBot.Tests
 		[TestMethod]
 		public void TestGrouping1()
 		{
-			var l = new List<FootballMatch>();
-			l.Add(new FootballMatch(String.Empty, String.Empty, String.Empty, String.Empty, "{{UNS}} UNAS", "{{GRA}} Grafenberg", String.Empty, String.Empty, String.Empty, String.Empty, String.Empty));
-			l.Add(new FootballMatch(String.Empty, String.Empty, String.Empty, String.Empty, "{{GRA}} Grafenberg", "{{UNS}} UNAS", String.Empty, String.Empty, String.Empty, String.Empty, String.Empty));
-			l.Add(new FootballMatch(String.Empty, String.Empty, String.Empty, String.Empty, "{{?}} New Halma Islands", "{{UNS}} UNAS", String.Empty, String.Empty, String.Empty, String.Empty, String.Empty));
+			var l = new List<FootballMatch>
+			{
+				new FootballMatch(String.Empty, String.Empty, String.Empty, String.Empty, "{{UNS}} UNAS", "{{GRA|#}}", "1:1",
+					String.Empty, String.Empty, String.Empty, String.Empty),
+				new FootballMatch(String.Empty, String.Empty, String.Empty, String.Empty, "{{GRA}} Grafenberg", "{{UNS|#}}",
+					"1:1", String.Empty, String.Empty, String.Empty, String.Empty),
+				new FootballMatch(String.Empty, String.Empty, String.Empty, String.Empty, "{{?}} New Halma Islands", "{{UNS}} UNAS",
+					"1:1", String.Empty, String.Empty, String.Empty, String.Empty)
+			};
 			var grp = FootballMatch.SortForOpponents(l);
 
-			Assert.AreEqual(grp["{{GRA|#}}"].Played, 2);
-			Assert.AreEqual(grp["{{NZL|#}}"].Played, 1);
+			Assert.AreEqual(grp["Grafenberg"].Played, 2);
+			Assert.AreEqual(grp["Neuseeland"].Played, 1);
 		}
 	}
 }
