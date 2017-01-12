@@ -1,7 +1,81 @@
-﻿namespace Simocracy.PwrBot
+﻿using System.Collections.Generic;
+
+namespace Simocracy.PwrBot
 {
 	class Simocracy
 	{
+		/// <summary>
+		/// Gibt das Flaggenkürzel des aktuellen Staates bzw. Nachfolgers zurück, die nicht (de)fusioniert wurden bzw. der Nachfolger eindeutig ist.
+		/// </summary>
+		public static Dictionary<string, string> Flags
+		{
+			get
+			{
+				return new Dictionary<string, string>
+				{
+					{"ABR", "BSC"},
+					{"BOS", "BSC"},
+					{"DRB", "BSC"},
+					{"ADE", "ORA"},
+					{"AQU", "SNL"},
+					{"AZO", "NZL"},
+					{"FNZ", "NZL"},
+					{"NHI", "NZL"},
+					{"FRP", "NZL"},
+					{"FNS", "NZL"},
+					{"OKA", "NZL"},
+					{"NZ", "NZL"},
+					{"New Halma Islands", "NZL"},
+					{"Neu Halmanesien", "NZL"},
+					{"New-Halmanesien", "NZL"},
+					{"Pacifica", "NZL"},
+					{"ASR", "BTZ"},
+					{"SUD", "PATA"},
+					{"HYL", "HYA"},
+					{"LAG", "RLQ"},
+					{"LAG", "RLQ"},
+					{"UKSI", "GRSI"},
+					{"SEV", "GRSI"},
+					{"SR", "KLY"},
+					{"STO", "KLY"},
+					{"NGT", "KLY"},
+					{"BOU", "KLY"},
+					{"Vannekar", "GRA"},
+					{"SHI", "KNN"},
+					{"HIK", "KNN"},
+					{"NVC", "KNN"},
+					{"UIP", "RPP"},
+					{"RPA", "RPP"},
+					{"Janinisches Reich", "RPP"},
+					{"VIR", "TOR"},
+					{"4VIR", "TOR"},
+					{"RNL", "NLL"},
+					{"AGM", "NLL"},
+					{"RUQ", "KSW"},
+					{"SOW", "KSW"},
+					{"KUR", "CSVR"},
+					{"RCF", "FRC"},
+					{"NFRC", "FRC"},
+					{"RCH", "FRC"},
+					{"BRU", "FVS"},
+					{"AST", "MAS"},
+					{"BOL1", "BOL"},
+					{"TRU", "MAC"},
+					{"MAC1", "MAC"},
+					{"EMM", "EMA"},
+					{"HJH", "NDL"},
+					{"SKV", "NDL"},
+					{"KOR", "SPA"},
+					{"Sijut", "GOA"},
+					{"GOT", "GOA"},
+					{"SIM", "NUS"},
+					{"Nuestra Senora", "NUS"},
+					{"Simultanien", "NUS"},
+					{"Azoren", "KBAZ"},
+					{"IBRU", "KBAB"}
+				};
+			}
+		}
 
 		/// <summary>
 		/// Gibt das Flaggenkürzel des aktuellen Staates bzw. Nachfolgers zurück, die nicht (de)fusioniert wurden bzw. der Nachfolger eindeutig ist.
@@ -10,94 +84,8 @@
 		/// <returns>Kürzel des aktuellen Staates</returns>
 		public static string GetFlag(string flag)
 		{
-			switch(flag)
-			{
-				case "ABR":
-				case "BOS":
-				case "DRB":
-					return "BSC";
-				case "ADE":
-					return "ORA";
-				case "AQU":
-					return "SNL";
-				case "AZO":
-				case "FNZ":
-				case "NHI":
-				case "FRP":
-				case "FNS":
-				case "OKA":
-				case "NZ":
-				case "New Halma Islands":
-				case "Neu Halmanesien":
-				case "Neu-Halmanesien":
-				case "Pacifica":
-					return "NZL";
-				case "ASR":
-					return "BTZ";
-				case "SUD":
-					return "PATA";
-				case "HYL":
-					return "HYA";
-				case "LAG":
-					return "RLQ";
-				case "SEV":
-					return "GRSI";
-				case "STO":
-				case "NGT":
-				case "MEY":
-				case "BOU":
-					return "KLY";
-				case "Vannekar":
-					return "GRA";
-				case "SHI":
-				case "HIK":
-					return "KNN";
-				case "UIP":
-				case "RPA":
-				case "Janinisches Reich":
-					return "RPP";
-				case "VIR":
-				case "4VIR":
-					return "TOR";
-				case "RNL":
-				case "AGM":
-					return "NLL";
-				case "RUQ":
-				case "SOW":
-					return "KSW";
-				case "KUR":
-					return "CSVR";
-				case "RCF":
-				case "NFRC":
-					return "FRC";
-				case "BRU":
-					return "FVS";
-				case "AST":
-					return "MAS";
-				case "BOL1":
-					return "BOL";
-				case "TRU":
-				case "MAC1":
-					return "MAC";
-				case "EMM":
-					return "EMA";
-				case "HJH":
-				case "SKV":
-					return "NDL";
-				case "KOR":
-					return "SPA";
-				case "Sijut":
-					return "GOA";
-				case "SIM":
-				case "Nuestra Senora":
-				case "Simultanien":
-					return "NUS";
-				case "Azoren":
-					return "KBAZ";
-
-				default:
-					return flag;
-			}
+			string current;
+			return Flags.TryGetValue(flag, out current) ? current : flag;
 		}
 
 		/// <summary>
