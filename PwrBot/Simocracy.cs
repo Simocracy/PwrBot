@@ -2,7 +2,7 @@
 
 namespace Simocracy.PwrBot
 {
-	class Simocracy
+	public class Simocracy
 	{
 		/// <summary>
 		/// Gibt das Flaggenkürzel des aktuellen Staates bzw. Nachfolgers zurück, die nicht (de)fusioniert wurden bzw. der Nachfolger eindeutig ist.

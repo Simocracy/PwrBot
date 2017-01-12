@@ -1,4 +1,4 @@
-class Simocracy:
+class FlagConverter:
 	"""
 	Convert Simocracy Flags
 	"""
