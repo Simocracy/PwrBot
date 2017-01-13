@@ -176,7 +176,7 @@ class FootballMatch:
 	@staticmethod
 	def GetMatchList(matches):
 		"""
-		Parsed die Matches
+		Parsed die Matches in FootballMatch-Objekte
 		matches (Match-Collection): Matches
 		return: Liste mit FootballMatch
 		"""
@@ -186,7 +186,7 @@ class FootballMatch:
 		return matchList
 	
 	@staticmethod
-	def SortForOpponents(matches):
+	def GroupByOpponents(matches):
 		"""
 		Analysiert die Statistik und gibt diese nach Gegnern gruppiert und alphabetisch sortiert zurück
 		matches (Enumerable<FootballMatch>): Spiele
@@ -216,10 +216,92 @@ class FootballMatch:
 			flag = FlagConverter.GetFlag(name if isNoneFlag else flag)
 			name = FlagConverter.GetStateName(flag if isDummyName else name)
 
-			if name not in dic:
+			if not name in dic:
 				fse = FootballStatElement(name, flag)
 				dic[name] = fse
 			dic[name].AddMatch(match)
 
 		sdic = OrderedDict(sorted(dic.items()))
 		return sdic
+
+	@staticmethod
+	def GetOpponentTableCode(opponents):
+		"""
+		Ausgabe der Bilanz von MainTeam nach Gegnern
+		opponents: Bilanz als OrderedDict<string, FootballStatElement>
+		return: Bilanz als Wikicode
+
+		"""
+		text = ("=== Nach Gegner ===\n"
+				"<html>"
+				"{| class=\"wikitable sortable\" style=\"text-align:center;\"\n"
+				"|-\n"
+				"! Mannschaft\n"
+				"! <abbr title=\"Spiele\">Sp.</abbr>\n"
+				"! <abbr title=\"Siege\">S</abbr>\n"
+				"! <abbr title=\"Unentschieden\">U</abbr>\n"
+				"! <abbr title=\"Niederlagen\">N</abbr>\n"
+				"! <abbr title=\"Tore\">T</abbr>\n"
+				"! <abbr title=\"Gegentore\">GT</abbr>\n"
+				"! <abbr title=\"Tordifferenz\">TD</abbr>\n"
+				"! <abbr title=\"Punkte\">P</abbr>")
+		for opp in opponents:
+			if not opp.Flag in FootballMatch.MainTeam:
+				text = str.format("{0}\n{1}", text, opp.OpponentWikicode)
+
+		text = str.format("{0}\n|}}\n<sup>Stand: <drechner eing=\"j\" day=\"j\">{1:%Y-%m-%d %H:%M}</drechner></sup>", text, datetime.datetime.now())
+
+		return text
+
+	@staticmethod
+	def SortForYears(matches):
+		dic = {int:FootballStatElement}
+		for match in machtes:
+			if not match.Date is datetime.min:
+				if not match.Date.year in dic:
+					fse = FootballStatElement(match.Date.year)
+					dic[match.Date.year] = fse
+				dic[match.Date.year].AddMatch(match)
+
+		sdic = OrderedDict(sorted(dic.items()))
+		return sdic
+
+	@staticmethod
+	def GetYearTableCode(years):
+		text = ("=== Nach Jahr ===\n"
+				"{| class=\"wikitable sortable\" style=\"text-align:center;\"\n"
+				"|-\n"
+				"! Jahr\n"
+				"! <abbr title=\"Spiele\">Sp.</abbr>\n"
+				"! <abbr title=\"Siege\">S</abbr>\n"
+				"! <abbr title=\"Unentschieden\">U</abbr>\n"
+				"! <abbr title=\"Niederlagen\">N</abbr>\n"
+				"! <abbr title=\"Tore\">T</abbr>\n"
+				"! <abbr title=\"Gegentore\">GT</abbr>\n"
+				"! <abbr title=\"Tordifferenz\">TD</abbr>\n"
+				"! <abbr title=\"Punkte\">P</abbr>")
+
+		allWon = 0;
+		allDrawn = 0;
+		allLose = 0;
+		allGoalsFor = 0;
+		allGoalsAgainst = 0;
+
+		for year in years:
+			allWon += year.Win
+			allDrawn += year.Drawn
+			allLose += year.Lose
+			allGoalsFor += year.GoalsFor
+			allGoalsAgainst += year.GoalsAgainst
+
+			text = str.format("{0}|n{1}", text, year.YearWikicode)
+
+		played = allWon + allDrawn + allLose
+		allGoalDiff = allGoalsFor - allGoalsAgainst
+		points = allWon * 3 + allDrawn
+
+		text = str.format("{0}\n|-\n! Ges. || {1} || {2} || {3} || {4} || {5} || {6} || {7:+0;-0;+0} || {8}\n|}}" +
+					"\n<sup>Stand: <drechner eing=\"j\" day=\"j\">{9:%Y-%m-%d %H:%M}</drechner></sup>",
+				text, played, allWon, allDrawn, allLose, allGoalsFor, allGoalsAgainst, allGoalDiff, points, datetime.datetime.now())
+
+		return text
