@@ -4,7 +4,7 @@ from datetime import datetime
 from collections import OrderedDict
 
 from FootballMatchAnalyser.FootballStatElement import FootballStatElement
-from Simocracy import FlagConverter
+from Simocracy.FlagConverter import FlagConverter
 
 class FootballMatch:
 	"""
@@ -190,7 +190,7 @@ class FootballMatch:
 		"""
 		Analysiert die Statistik und gibt diese nach Gegnern gruppiert und alphabetisch sortiert zurück
 		matches (Enumerable<FootballMatch>): Spiele
-		return (Dictionary<string, FootballStatElement>): Statistik
+		return (OrderedDict<string, FootballStatElement>): Statistik
 		"""
 		dic = {}
 		flagTempRegex = re.compile(r"\{\{([^\|\}]*)(\|([^\}\|]*))?(\|([^\}\|]*))?\}\}")

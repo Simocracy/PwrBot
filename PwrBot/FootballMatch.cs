@@ -343,7 +343,7 @@ namespace Simocracy.PwrBot
 		public static string GetOpponentTableCode(SortedDictionary<string, FootballStatElement> opponents)
 		{
 			var text = "=== Nach Gegner ===\n" +
-				"<html><style>\n" +
+				"<html>"/*"<style>\n" +
 				".s {\n" +
 				"    background:#CCFFCC;\n" +
 				"}\n" +
@@ -352,7 +352,7 @@ namespace Simocracy.PwrBot
 				"}\n" +
 				".n {\n" +
 				"    background:#FFCCCC;\n" +
-				"}</style></html>\n" +
+				"}</style></html>\n"*/ +
 				"{| class=\"wikitable sortable\" style=\"text-align:center;\"\n" +
 				"|-\n" +
 				"! Mannschaft\n" +
@@ -368,7 +368,7 @@ namespace Simocracy.PwrBot
 			foreach(var opp in opponents)
 			{
 				if(!(MainTeam.Contains("RIV") && opp.Value.Flag.Contains("RIV")))
-					text = String.Format("{0}\n{1}", text, opp.Value.GetOpponentWikicode());
+					text = String.Format("{0}\n{1}", text, opp.Value.OpponentWikicode);
 			}
 			
 			text = String.Format("{0}\n{1}\n<sup>Stand: <drechner eing=\"j\" day=\"j\">{2}</drechner></sup>",
@@ -429,7 +429,7 @@ namespace Simocracy.PwrBot
 				allGoalsFor += year.Value.GoalsFor;
 				allGoalsAgainst += year.Value.GoalsAgainst;
 
-				text = String.Format("{0}\n{1}", text, year.Value.GetYearWikicode());
+				text = String.Format("{0}\n{1}", text, year.Value.YearWikicode);
 			}
 
 			var played = allWon + allDrawn + allLose;

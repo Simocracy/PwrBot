@@ -31,6 +31,10 @@ class FootballStatElement:
 	def Balance(self):
 		return self.Win - self.Lose
 
+	@property
+	def ColorCode(self):
+		return "CCFFCC" if Balance > 0 else "FFCCCC" if Balance < 0 else "FFFFCC"
+
 	def AddMatch(self, match):
 		if match.Result != "X":
 			self.Matches.append(match)
@@ -64,11 +68,10 @@ class FootballStatElement:
 		self.Matches = []
 
 	def GetOpponentWikicode(self):
-		return "|- class=\"{0}\"\n| style=\"text-align:left;\" | {1}\n| {2} || {3} || {4} || {5} || {6} || {7} || {8:+0;-0;+0} || {9}".format(
-			"s" if Balance > 0 else "n" if Balance < 0 else "u",
-			Flag, Played, Win, Drawn, Lose, GoalsFor, GoalsAgainst, GoalDiff, Points)
+		return "|- style=\"background:#{0};\"\n| style=\"text-align:left;\" | {1}\n| {2} || {3} || {4} || {5} || {6} || {7} || {8:+0;-0;+0} || {9}".format(
+			self.ColorCode, self.Flag, self.Played, self.Win, self.Drawn, self.Lose, self.GoalsFor, self.GoalsAgainst, self.GoalDiff, self.Points)
 
 	def GetYearWikicode(self):
 		return "|-\n| '''{0}''' || {1} || {2} || {3} || {4} || {5} || {6} || {7:+0;-0;+0} || {8}".format(
 			Year if Year > 1930 else "N/A",
-			Played, Win, Drawn, Lose, GoalsFor, GoalsAgainst, GoalDiff, Points)
+			self.Played, self.Win, self.Drawn, self.Lose, self.GoalsFor, self.GoalsAgainst, self.GoalDiff, self.Points)
