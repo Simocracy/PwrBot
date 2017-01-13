@@ -267,7 +267,7 @@ namespace Simocracy.PwrBot
 		//}
 
 		/// <summary>
-		/// Parsed die Matches
+		/// Parsed die Matches in <see cref="FootballMatch"/>-Objekte
 		/// </summary>
 		/// <param name="matches">Matches</param>
 		/// <returns>Liste mit <see cref="FootballMatch"/></returns>
@@ -284,7 +284,7 @@ namespace Simocracy.PwrBot
 		/// </summary>
 		/// <param name="matches">Spiele</param>
 		/// <returns>Statistik</returns>
-		public static SortedDictionary<string, FootballStatElement> SortForOpponents(IEnumerable<FootballMatch> matches)
+		public static SortedDictionary<string, FootballStatElement> GroupByOpponents(IEnumerable<FootballMatch> matches)
 		{
 			var sdic = new SortedDictionary<string, FootballStatElement>();
 			var flagTempRegex = new Regex(@"\{\{([^\|\}]*)(\|([^\}\|]*))?(\|([^\}\|]*))?\}\}");
@@ -367,17 +367,16 @@ namespace Simocracy.PwrBot
 
 			foreach(var opp in opponents)
 			{
-				if(!(MainTeam.Contains("RIV") && opp.Value.Flag.Contains("RIV")))
-					text = String.Format("{0}\n{1}", text, opp.Value.OpponentWikicode);
+				if(!MainTeam.Contains(opp.Value.Flag))
+					text = $"{text}\n{opp.Value.OpponentWikicode}";
 			}
 			
-			text = String.Format("{0}\n{1}\n<sup>Stand: <drechner eing=\"j\" day=\"j\">{2}</drechner></sup>",
-				text, "|}", DateTime.Now.ToString("yyyy-MM-dd HH:mm"));
+			text = $"{text}\n|}}\n<sup>Stand: <drechner eing=\"j\" day=\"j\">{DateTime.Now:yyyy-MM-dd HH:mm}</drechner></sup>";
 
 			return text;
 		}
 
-		public static SortedDictionary<int, FootballStatElement> SortForYears(IEnumerable<FootballMatch> matches)
+		public static SortedDictionary<int, FootballStatElement> GroupByYears(IEnumerable<FootballMatch> matches)
 		{
 			var sdic = new SortedDictionary<int, FootballStatElement>();
 
@@ -429,16 +428,15 @@ namespace Simocracy.PwrBot
 				allGoalsFor += year.Value.GoalsFor;
 				allGoalsAgainst += year.Value.GoalsAgainst;
 
-				text = String.Format("{0}\n{1}", text, year.Value.YearWikicode);
+				text = $"{text}\n{year.Value.YearWikicode}";
 			}
 
 			var played = allWon + allDrawn + allLose;
-			var allGoalDiff = (allGoalsFor - allGoalsAgainst).ToString("+0;-0;+0");
+			var allGoalDiff = allGoalsFor - allGoalsAgainst;
 			var points = allWon * 3 + allDrawn;
-			text = String.Format("{0}\n|-\n! Ges. || {1} || {2} || {3} || {4} || {5} || {6} || {7} || {8}\n|}}" +
-					"\n<sup>Stand: <drechner eing=\"j\" day=\"j\">{9}</drechner></sup>",
-				text, played, allWon, allDrawn, allLose, allGoalsFor, allGoalsAgainst, allGoalDiff, points,
-				DateTime.Now.ToString("yyyy-MM-dd HH:mm"));
+			text = String.Format("{0}\n|-\n! Ges. || {1} || {2} || {3} || {4} || {5} || {6} || {7:+0;-0;+0} || {8}\n|}}" +
+					"\n<sup>Stand: <drechner eing=\"j\" day=\"j\">{9:yyyy-MM-dd HH:mm}</drechner></sup>",
+				text, played, allWon, allDrawn, allLose, allGoalsFor, allGoalsAgainst, allGoalDiff, points, DateTime.Now);
 
 			return text;
 		}
@@ -495,7 +493,7 @@ namespace Simocracy.PwrBot
 
 			if(opponentSection != 0)
 			{
-				var opponents = SortForOpponents(footballMatchList);
+				var opponents = GroupByOpponents(footballMatchList);
 				Console.WriteLine(opponents.Count + " Opponents found");
 				foreach(var o in opponents)
 					Console.WriteLine("{0}: {1} Matches", o.Key, o.Value.Played);
@@ -515,7 +513,7 @@ namespace Simocracy.PwrBot
 
 			if(yearSection != 0)
 			{
-				var years = FootballMatch.SortForYears(footballMatchList);
+				var years = FootballMatch.GroupByYears(footballMatchList);
 				Console.WriteLine(years.Count + " Years found");
 				foreach(var o in years)
 					Console.WriteLine("{0}: {1} Matches", o.Key, o.Value.Played);

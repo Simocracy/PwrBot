@@ -61,7 +61,7 @@ namespace Simocracy.PwrBot
 		/// Wikicode für Jahrestabelle
 		/// </summary>
 		public string YearWikicode =>
-			$"|-\n| '''{(Year > 1930 ? Year.ToString() : "N/A")}''' || {Played} || {Win} || {Drawn} || {Lose} || {GoalsFor} || {GoalsAgainst} || {GoalDiff:+0;-0;+0} || {Points}"
+			$"|-\n| '''{Year}''' || {Played} || {Win} || {Drawn} || {Lose} || {GoalsFor} || {GoalsAgainst} || {GoalDiff:+0;-0;+0} || {Points}"
 			;
 
 		public void AddMatch(FootballMatch match)

@@ -56,6 +56,16 @@ class FootballStatElement:
 					self.Drawn += 1
 				self.GoalsFor += match.ResultHome;
 				self.GoalsAgainst += match.ResultAway
+		
+	@property
+	def OpponentWikicode (self):
+		return "|- style=\"background:#{0};\"\n| style=\"text-align:left;\" | {1}\n| {2} || {3} || {4} || {5} || {6} || {7} || {8:+0;-0;+0} || {9}".format(
+			self.ColorCode, self.Flag, self.Played, self.Win, self.Drawn, self.Lose, self.GoalsFor, self.GoalsAgainst, self.GoalDiff, self.Points)
+
+	@property
+	def YearWikicode (self):
+		return "|-\n| '''{0}''' || {1} || {2} || {3} || {4} || {5} || {6} || {7:+0;-0;+0} || {8}".format(
+			self.Year, self.Played, self.Win, self.Drawn, self.Lose, self.GoalsFor, self.GoalsAgainst, self.GoalDiff, self.Points)
 
 	def __init__(self, name, flag):
 		"""
@@ -67,11 +77,10 @@ class FootballStatElement:
 		self.Flag = str.format("{{{{{0}|#}}}}", flag)
 		self.Matches = []
 
-	def GetOpponentWikicode(self):
-		return "|- style=\"background:#{0};\"\n| style=\"text-align:left;\" | {1}\n| {2} || {3} || {4} || {5} || {6} || {7} || {8:+0;-0;+0} || {9}".format(
-			self.ColorCode, self.Flag, self.Played, self.Win, self.Drawn, self.Lose, self.GoalsFor, self.GoalsAgainst, self.GoalDiff, self.Points)
-
-	def GetYearWikicode(self):
-		return "|-\n| '''{0}''' || {1} || {2} || {3} || {4} || {5} || {6} || {7:+0;-0;+0} || {8}".format(
-			Year if Year > 1930 else "N/A",
-			self.Played, self.Win, self.Drawn, self.Lose, self.GoalsFor, self.GoalsAgainst, self.GoalDiff, self.Points)
+	def __init__(self, year):
+		"""
+		Erstellt neues FootballStatElement
+		year (int): Jahr
+		"""
+		self.Year = year
+		self.Matches = []

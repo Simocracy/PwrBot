@@ -27,7 +27,7 @@ class Test_FootballMatch(unittest.TestCase):
 		l = [FootballMatch("", "", "", "", "{{UNS}} UNAS", "{{GRA|#}}", "1:1", "", "", "", ""),
 			FootballMatch("", "", "", "", "{{GRA}} Grafenberg", "{{UNS|#}}", "1:1", "", "", "", ""),
 			FootballMatch("", "", "", "", "{{?}} New Halma Islands", "{{UNS}} UNAS", "1:1", "", "", "", "")]
-		grp = FootballMatch.SortForOpponents(l)
+		grp = FootballMatch.GroupByOpponents(l)
 		self.assertEquals(2, grp["Grafenberg"].Played)
 		self.assertEquals(1, grp["Neuseeland"].Played)
 

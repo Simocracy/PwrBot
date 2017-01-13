@@ -75,7 +75,7 @@ namespace PwrBot.Tests
 				new FootballMatch(String.Empty, String.Empty, String.Empty, String.Empty, "{{?}} New Halma Islands", "{{UNS}} UNAS",
 					"1:1", String.Empty, String.Empty, String.Empty, String.Empty)
 			};
-			var grp = FootballMatch.SortForOpponents(l);
+			var grp = FootballMatch.GroupByOpponents(l);
 
 			Assert.AreEqual(grp["Grafenberg"].Played, 2);
 			Assert.AreEqual(grp["Neuseeland"].Played, 1);
