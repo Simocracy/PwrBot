@@ -27,7 +27,6 @@ class FlagConverter:
 		"SUD": "PATA",
 		"HYL": "HYA",
 		"LAG": "RLQ",
-		"LAG": "RLQ",
 		"UKSI": "GRSI",
 		"SEV": "GRSI",
 		"SR": "KLY",
@@ -231,8 +230,8 @@ class FlagConverter:
 		name: Kürzel oder Name des historischen Staates
 		return: Kürzel des aktuellen Staates
 		"""
-		if name in Flags:
-			return Flags[name]
+		if name in FlagConverter.Flags:
+			return FlagConverter.Flags[name]
 		else:
 			return name
 	
@@ -243,7 +242,7 @@ class FlagConverter:
 		flag: Historisches Kürzel oder Name
 		return: Aktueller Name
 		"""
-		if flag in StateNames:
-			return StateNames[flag]
+		if flag in FlagConverter.StateNames:
+			return FlagConverter.StateNames[flag]
 		else:
 			return flag
