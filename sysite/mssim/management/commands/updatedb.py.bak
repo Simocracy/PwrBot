@@ -1,32 +1,34 @@
 ﻿#!/usr/bin/python
 # -*- coding: UTF-8 -*-
 
-import urllib.request, urllib.parse, urllib.error, urllib.request, urllib.error, urllib.parse, http.cookiejar
+import urllib, urllib2, cookielib
 import xml.etree.ElementTree as ET
 import re
 import time
 import simocracy.wiki as wiki
-import simocracy.IAS as IAS
 
 from django.core.management.base import BaseCommand, CommandError
 from mssim.models import Staat, Buendnis
 
 class Command(BaseCommand):
     args = 'None'
-    help = 'Aktualisiert die Staatendatenbank und das IAS'
+    help = 'Aktualisiert die Staatendatenbank'
     
     neutralflagge = "http://simocracy.de/images/1/1c/Xxwhiteflag.png"
     platzhalter = "http://simocracy.de/images/6/65/Platzhalter.png"
             
         
+        
+        
     """
     Fuehrt das Kommando aus.
     """
     def handle(self, *args, **options):
-        wiki.login()
-        vz = wiki.readVZ()
-
-        staaten = wiki.readStates(vz)
+	opener = wiki.login(wiki.username, wiki.password)
+        response = opener.open(wiki.url + wiki.vz + "?action=raw")
+        vz = wiki.readVZ(response, opener)
+        
+        staaten = vz["staaten"]
         bnds = vz["buendnisse"]
         
         """
@@ -43,34 +45,22 @@ class Command(BaseCommand):
         neutralbnd.flagge = self.platzhalter
         neutralbnd.save()
         
-        i = 1
         for buendnis in bnds:
             bnd = Buendnis()
-            bnd.nummer = i
             bnd.flagge = buendnis["flagge"]
             bnd.name = buendnis["name"]
             bnd.save()
-            i += 1
             
         # Staaten sortieren
-        #staaten = sorted(staaten, key=lambda k: k['name']) 
-
-        i = 1
+        staaten = sorted(staaten, key=lambda k: k['name']) 
+            
         for state in staaten:
-            #nur bespielte Staaten eintragen
-            if state["spielerlos"]:
-                continue
-
             staat = Staat()
-            staat.nummer = i
             staat.name = state["name"]
-            flag = "[["+state["infobox"]["Flagge"]+"]]"
-            staat.flagge = wiki.extractFlag(flag)
+            staat.flagge = state["flagge"]
             staat.spieler = state["spieler"]
             staat.ms = state["ms"]
             staat.bomben = state["as"]
-            staat.zweitstaat = state["zweitstaat"]
-            i += 1
             
             #Bündnis suchen
             found = False
@@ -91,10 +81,3 @@ class Command(BaseCommand):
         f = open("/home/fluggs/sysite/mssim/lastupdate", "w")
         f.write(str(int(time.time())))
         f.close()
-
-        print("mssim-db aktualisiert")
-
-
-        #IAS
-        IAS.updateArticle(staaten)
-        print("IAS aktualisiert")
