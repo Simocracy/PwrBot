@@ -32,14 +32,48 @@
     <Compile Include="simocracy\IAS.py" />
     <Compile Include="simocracy\ldhost.py" />
     <Compile Include="simocracy\statemachine.py" />
-    <Compile Include="simocracy\updatedb.py" />
     <Compile Include="simocracy\wiki.py" />
     <Compile Include="simocracy\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="sysite\manage.py" />
+    <Compile Include="sysite\mssim\admin.py" />
+    <Compile Include="sysite\mssim\management\commands\updatedb.py" />
+    <Compile Include="sysite\mssim\management\commands\__init__.py" />
+    <Compile Include="sysite\mssim\management\__init__.py" />
+    <Compile Include="sysite\mssim\migrations\0001_initial.py" />
+    <Compile Include="sysite\mssim\migrations\0002_staat_zweitstaat.py" />
+    <Compile Include="sysite\mssim\migrations\0003_auto_20150201_1939.py" />
+    <Compile Include="sysite\mssim\migrations\__init__.py" />
+    <Compile Include="sysite\mssim\models.py" />
+    <Compile Include="sysite\mssim\tests.py" />
+    <Compile Include="sysite\mssim\urls.py" />
+    <Compile Include="sysite\mssim\views.py" />
+    <Compile Include="sysite\mssim\__init__.py" />
+    <Compile Include="sysite\sysite\settings.py" />
+    <Compile Include="sysite\sysite\urls.py" />
+    <Compile Include="sysite\sysite\wsgi.py" />
+    <Compile Include="sysite\sysite\__init__.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="simocracy\" />
+    <Folder Include="sysite\" />
+    <Folder Include="sysite\mssim\" />
+    <Folder Include="sysite\mssim\management\" />
+    <Folder Include="sysite\mssim\management\commands\" />
+    <Folder Include="sysite\mssim\migrations\" />
+    <Folder Include="sysite\mssim\templates\" />
+    <Folder Include="sysite\mssim\templates\datum\" />
+    <Folder Include="sysite\mssim\templates\mssim\" />
+    <Folder Include="sysite\mssim\templates\slwahl\" />
+    <Folder Include="sysite\mssim\templates\wahlsim\" />
+    <Folder Include="sysite\sysite\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="sysite\mssim\templates\datum\index.html" />
+    <Content Include="sysite\mssim\templates\mssim\index.html" />
+    <Content Include="sysite\mssim\templates\slwahl\index.html" />
+    <Content Include="sysite\mssim\templates\wahlsim\index.html" />
   </ItemGroup>
   <Import Project="$(PtvsTargetsFile)" Condition="Exists($(PtvsTargetsFile))" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="!Exists($(PtvsTargetsFile))" />
