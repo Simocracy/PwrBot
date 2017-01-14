@@ -3,7 +3,7 @@ import re
 from datetime import datetime
 from collections import OrderedDict
 
-import simocracy.flagConverter
+from simocracy import flagConverter
 from footballMatchAnalyzer.footballStatElement import FootballStatElement
 
 
@@ -15,125 +15,125 @@ class FootballMatch:
 	"""
 	Team, dessen Statistik erstellt wird, Basierend auf FLAGGENKÜRZEL
 	"""
-	MainTeam = ["UNS"]
+	mainTeam = ["UNS"]
 
 	"""
 	Liste der Nachfolgerstaaten, FLAGGENKÜRZEL, Schema Vorgänger -> Aktueller Staat (bzw. Nachfolger)
 	"""
-	Sucessor = []
+	sucessor = []
 
-	_Tournament = ""
+	_tournament = ""
 	@property
-	def Tournament(self):
-		return self._Tournament
-	@Tournament.setter
-	def Tournament(self, value):
+	def tournament(self):
+		return self._tournament
+	@tournament.setter
+	def tournament(self, value):
 		s = value.strip()
 		self._Tournament = s.replace("-", "") if (len(s) < 3) else s
 
-	Date = datetime.min
+	date = datetime.min
 
-	_City = ""
+	_city = ""
 	@property
-	def City(self):
-		return self._City
-	@City.setter
-	def City(self, value):
-		self._City = value.strip()
+	def city(self):
+		return self._city
+	@city.setter
+	def city(self, value):
+		self._city = value.strip()
 
-	_Stadium = ""
+	_stadium = ""
 	@property
-	def Stadium(self):
-		return self._Stadium
-	@Stadium.setter
-	def Stadium(self, value):
-		self._Stadium = value.strip()
+	def stadium(self):
+		return self._stadium
+	@stadium.setter
+	def stadium(self, value):
+		self._stadium = value.strip()
 
-	_HomeTeam = ""
+	_homeTeam = ""
 	@property
-	def HomeTeam(self):
+	def homeTeam(self):
 		"""
 		Inkl. Flaggenkürzel
 		"""
-		return self._HomeTeam
-	@HomeTeam.setter
-	def HomeTeam(self, value):
-		self._HomeTeam = value.strip().replace("'", "")
+		return self._homeTeam
+	@homeTeam.setter
+	def homeTeam(self, value):
+		self._homeTeam = value.strip().replace("'", "")
 
-	_AwayTeam = ""
+	_awayTeam = ""
 	@property
-	def AwayTeam(self):
+	def awayTeam(self):
 		"""
 		Inkl. Flaggenkürzel
 		"""
-		return self._AwayTeam
-	@AwayTeam.setter
-	def AwayTeam(self, value):
-		self._AwayTeam = value.strip().replace("'", "")
+		return self._awayTeam
+	@awayTeam.setter
+	def awayTeam(self, value):
+		self._awayTeam = value.strip().replace("'", "")
 		
 	@property
-	def OpponentTeam(self):
+	def opponentTeam(self):
 		"""
 		Gegnerteam für Sortierung nach Gegner
 		"""
-		for s in self.MainTeam:
-			if s in self.AwayTeam:
-				return self.HomeTeam
-			return self.AwayTeam
+		for s in self.mainTeam:
+			if s in self.awayTeam:
+				return self.homeTeam
+			return self.awayTeam
 		
 	"""
 	-1 wenn kein Spielergebnis
 	"""
-	ResultHome = ""
+	resultHome = ""
 
 	"""
 	-1 wenn kein Spielergebnis
 	"""
-	ResultAway = ""
+	resultAway = ""
 
 	@property
-	def Result(self):
+	def result(self):
 		"""
 		Vollständiges Spielergebnis
 		"""
-		if (self.ResultHome < 0 or self.ResultAway < 0):
+		if (self.resultHome < 0 or self.resultAway < 0):
 			return "X"
 		else:
-			return str(self.ResultHome) + ":" + str(self.ResultAway)
+			return str(self.resultHome) + ":" + str(self.resultAway)
 
-	Spectators = 0
-	IsSoldOut = False
+	spectators = 0
+	isSoldOut = False
 
-	_Referee = ""
+	_referee = ""
 	@property
-	def Referee(self):
+	def referee(self):
 		"""
 		Inkl. Flaggenkürzel
 		"""
-		return self._Referee
-	@Referee.setter
-	def Referee(self, value):
-		self._Referee = value.strip().replace("'", "")
+		return self._referee
+	@referee.setter
+	def referee(self, value):
+		self._referee = value.strip().replace("'", "")
 
 	"""
 	Quellcode im Wiki
 	"""
-	SourceCode = ""
+	sourceCode = ""
 
 	def __init__(self, tournament, date, city, stadium, homeTeam, awayTeam, result, spectators, soldOut, referee, source):
-			self.Tournament = tournament;
-			self.SetDate(date);
-			self.City = city;
-			self.Stadium = stadium;
-			self.HomeTeam = homeTeam;
-			self.AwayTeam = awayTeam;
-			self.SetResults(result);
-			self.SetSpectators(spectators);
+			self.tournament = tournament;
+			self.setDate(date);
+			self.city = city;
+			self.stadium = stadium;
+			self.homeTeam = homeTeam;
+			self.awayTeam = awayTeam;
+			self.setResults(result);
+			self.setSpectators(spectators);
 			self.SetIsSoldOut(soldOut);
-			self.Referee = referee;
-			self.SourceCode = source;
+			self.referee = referee;
+			self.sourceCode = source;
 
-	def SetDate(self, date):
+	def setDate(self, date):
 		try:
 			exactDatePattern = r"((\d{1,2})\.)?((\d{1,2})\.)?(\d{2,4})"
 			exactDateMatch = re.match(exactDatePattern, date)
@@ -148,34 +148,34 @@ class FootballMatch:
 				else:
 					datepstr = "%d.%m.%Y"
 				parsedDate = datetime.strptime(matchStr, datepstr)
-				self.Date = parsedDate
+				self.date = parsedDate
 
 		except:
-			self.Date = datetime.min
+			self.date = datetime.min
 		
 
-	def SetResults(self, result):
+	def setResults(self, result):
 		resPattern = r"(\d+):(\d+)"
 		resMatch = re.match(resPattern, result)
 		if not resMatch is None:
-			self.ResultHome = int(resMatch.group(1))
-			self.ResultAway = int(resMatch.group(2))
+			self.resultHome = int(resMatch.group(1))
+			self.resultAway = int(resMatch.group(2))
 		else:
-			self.ResultHome = -1;
-			self.ResultAway = -1;
+			self.resultHome = -1;
+			self.resultAway = -1;
 
-	def SetSpectators(self, spectators):
+	def setSpectators(self, spectators):
 		try:
 			sp = spectators.replace(".","").replace("'","").replace(" ","")
-			self.Spectators = int(sp)
+			self.spectators = int(sp)
 		except:
-			self.Spectators = 0
+			self.spectators = 0
 
 	def SetIsSoldOut(self, soldOut):
-		self.IsSoldOut = len(soldOut.strip()) > 0
+		self.isSoldOut = len(soldOut.strip()) > 0
 
 	@staticmethod
-	def GetMatchList(matches):
+	def getMatchList(matches):
 		"""
 		Parsed die Matches in FootballMatch-Objekte
 		matches (Match-Collection): Matches
@@ -187,7 +187,7 @@ class FootballMatch:
 		return matchList
 	
 	@staticmethod
-	def GroupByOpponents(matches):
+	def groupByOpponents(matches):
 		"""
 		Analysiert die Statistik und gibt diese nach Gegnern gruppiert und alphabetisch sortiert zurück
 		matches (Enumerable<FootballMatch>): Spiele
@@ -196,7 +196,7 @@ class FootballMatch:
 		dic = {}
 		flagTempRegex = re.compile(r"\{\{([^\|\}]*)(\|([^\}\|]*))?(\|([^\}\|]*))?\}\}")
 		for match in matches:
-			flagMatch = flagTempRegex.match(match.OpponentTeam)
+			flagMatch = flagTempRegex.match(match.opponentTeam)
 
 			flag = flagMatch.group(1)
 			if len(flag.strip()) < 1:
@@ -210,23 +210,23 @@ class FootballMatch:
 				name = flagMatch.group(5)
 			# {{GRA}} -> "" -> {{GRA}} Grafenberg -> Grafenberg
 			else:
-				name = flagTempRegex.sub("", match.OpponentTeam).strip()
+				name = flagTempRegex.sub("", match.opponentTeam).strip()
 
 			isNoneFlag = "?" in flag
 			isDummyName = "#" in name
-			flag = flagConverter.GetFlag(name if isNoneFlag else flag)
-			name = flagConverter.GetStateName(flag if isDummyName else name)
+			flag = flagConverter.getFlag(name if isNoneFlag else flag)
+			name = flagConverter.getStateName(flag if isDummyName else name)
 
 			if not name in dic:
 				fse = FootballStatElement(name, flag)
 				dic[name] = fse
-			dic[name].AddMatch(match)
+			dic[name].addMatch(match)
 
 		sdic = OrderedDict(sorted(dic.items()))
 		return sdic
 
 	@staticmethod
-	def GetOpponentTableCode(opponents):
+	def getOpponentTableCode(opponents):
 		"""
 		Ausgabe der Bilanz von MainTeam nach Gegnern
 		opponents: Bilanz als OrderedDict<string, FootballStatElement>
@@ -247,28 +247,28 @@ class FootballMatch:
 				"! <abbr title=\"Tordifferenz\">TD</abbr>\n"
 				"! <abbr title=\"Punkte\">P</abbr>")
 		for opp in opponents:
-			if not opp.Flag in FootballMatch.MainTeam:
-				text = str.format("{0}\n{1}", text, opp.OpponentWikicode)
+			if not opp.Flag in FootballMatch.mainTeam:
+				text = str.format("{0}\n{1}", text, opp.opponentWikicode)
 
 		text = str.format("{0}\n|}}\n<sup>Stand: <drechner eing=\"j\" day=\"j\">{1:%Y-%m-%d %H:%M}</drechner></sup>", text, datetime.datetime.now())
 
 		return text
 
 	@staticmethod
-	def SortForYears(matches):
+	def sortForYears(matches):
 		dic = {int:FootballStatElement}
 		for match in machtes:
-			if not match.Date is datetime.min:
-				if not match.Date.year in dic:
-					fse = FootballStatElement(match.Date.year)
-					dic[match.Date.year] = fse
-				dic[match.Date.year].AddMatch(match)
+			if not match.date is datetime.min:
+				if not match.date.year in dic:
+					fse = FootballStatElement(match.date.year)
+					dic[match.date.year] = fse
+				dic[match.date.year].addMatch(match)
 
 		sdic = OrderedDict(sorted(dic.items()))
 		return sdic
 
 	@staticmethod
-	def GetYearTableCode(years):
+	def getYearTableCode(years):
 		text = ("=== Nach Jahr ===\n"
 				"{| class=\"wikitable sortable\" style=\"text-align:center;\"\n"
 				"|-\n"
@@ -289,13 +289,13 @@ class FootballMatch:
 		allGoalsAgainst = 0;
 
 		for year in years:
-			allWon += year.Win
-			allDrawn += year.Drawn
-			allLose += year.Lose
-			allGoalsFor += year.GoalsFor
-			allGoalsAgainst += year.GoalsAgainst
+			allWon += year.win
+			allDrawn += year.drawn
+			allLose += year.lose
+			allGoalsFor += year.goalsFor
+			allGoalsAgainst += year.goalsAgainst
 
-			text = str.format("{0}|n{1}", text, year.YearWikicode)
+			text = str.format("{0}|n{1}", text, year.yearWikicode)
 
 		played = allWon + allDrawn + allLose
 		allGoalDiff = allGoalsFor - allGoalsAgainst
@@ -306,3 +306,11 @@ class FootballMatch:
 				text, played, allWon, allDrawn, allLose, allGoalsFor, allGoalsAgainst, allGoalDiff, points, datetime.datetime.now())
 
 		return text
+
+	def analyseFootballStats(articleName, mainTeams):
+		"""
+		Analysiert und wertet die Statistik einer Fußballnationalmannschaft aus
+		articleName: Artikel mit der Statistik
+		mainTeams[]: Mainteams, auf die ausgewertet werden soll
+		"""
+		MainTeam = mainTeams

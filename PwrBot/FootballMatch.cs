@@ -325,7 +325,7 @@ namespace Simocracy.PwrBot
 					var fse = new FootballStatElement()
 					{
 						Name = name,
-						Flag = String.Format("{{{{{0}|#}}}}", flag)
+						Flag = $"{{{{{flag}|#}}}}"
 					};
 					sdic.Add(name, fse);
 				}
@@ -434,9 +434,9 @@ namespace Simocracy.PwrBot
 			var played = allWon + allDrawn + allLose;
 			var allGoalDiff = allGoalsFor - allGoalsAgainst;
 			var points = allWon * 3 + allDrawn;
-			text = String.Format("{0}\n|-\n! Ges. || {1} || {2} || {3} || {4} || {5} || {6} || {7:+0;-0;+0} || {8}\n|}}" +
-					"\n<sup>Stand: <drechner eing=\"j\" day=\"j\">{9:yyyy-MM-dd HH:mm}</drechner></sup>",
-				text, played, allWon, allDrawn, allLose, allGoalsFor, allGoalsAgainst, allGoalDiff, points, DateTime.Now);
+			text =
+				$"{text}\n|-\n! Ges. || {played} || {allWon} || {allDrawn} || {allLose} || {allGoalsFor} || {allGoalsAgainst} || {allGoalDiff:+0;-0;+0} || {points}\n|}}" +
+				$"\n<sup>Stand: <drechner eing=\"j\" day=\"j\">{DateTime.Now:yyyy-MM-dd HH:mm}</drechner></sup>";
 
 			return text;
 		}

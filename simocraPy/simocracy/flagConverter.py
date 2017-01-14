@@ -3,7 +3,7 @@
 """
 Gibt das Flaggenkürzel des aktuellen Staates bzw. Nachfolgers zurück, die nicht (de)fusioniert wurden bzw. der Nachfolger eindeutig ist.
 """
-Flags = {
+flags = {
 	"ABR": "BSC",
 	"BOS": "BSC",
 	"DRB": "BSC",
@@ -68,7 +68,7 @@ Flags = {
 """
 Gibt den Staatsnamen des angegebenen Kürzels oder historischen Staates zurück
 """
-StateNames = {
+stateNames = {
 	"ADRM": "Ostmedirien",
 	"ABR": "Boscoulis",
 	"BOS": "Boscoulis",
@@ -220,26 +220,24 @@ StateNames = {
 	"KBAZ": "Azoren"
 	}
 	
-@staticmethod
-def GetFlag(name):
+def getFlag(name):
 	"""
 	Gibt das Flaggenkürzel des aktuellen Staates bzw. Nachfolgers zurück, die nicht (de)fusioniert wurden bzw. der Nachfolger eindeutig ist.
 	name: Kürzel oder Name des historischen Staates
 	return: Kürzel des aktuellen Staates
 	"""
-	if name in FlagConverter.Flags:
-		return FlagConverter.Flags[name]
+	if name in flags:
+		return flags[name]
 	else:
 		return name
-	
-@staticmethod
-def GetStateName(flag):
+
+def getStateName(flag):
 	"""
 	Gibt den Staatsnamen des angegebenen Kürzels oder historischen Staates zurück
 	flag: Historisches Kürzel oder Name
 	return: Aktueller Name
 	"""
-	if flag in FlagConverter.StateNames:
-		return FlagConverter.StateNames[flag]
+	if flag in stateNames:
+		return stateNames[flag]
 	else:
 		return flag

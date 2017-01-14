@@ -1,71 +1,79 @@
 class FootballStatElement:
 	"""Gesamtstatistik für einen Gegner"""
 
-	Name = ""
-	Flag = ""
-	Year = 0
-	Matches = []
-	PreComment = "";
-	PostComment = "";
+	name = ""
+	flag = ""
+	year = 0
+	matches = []
+	preComment = "";
+	postComment = "";
 	
 	@property
-	def Played(self):
-		return self.Win + self.Drawn + self.Lose
+	def played(self):
+		return self.win + self.drawn + self.lose
 
-	Win = 0
-	Drawn = 0
-	Lose = 0
-	GoalsFor = 0
-	GoalsAgainst = 0
-	GoalsDIff = 0
-
-	@property
-	def GoalsDiff(self):
-		return self.GoalsFor - self.GoalsAgainst
+	win = 0
+	drawn = 0
+	lose = 0
+	goalsFor = 0
+	goalsAgainst = 0
+	goalsDIff = 0
 
 	@property
-	def Points(self):
-		return self.Win * 3 + self.Drawn
+	def goalsDiff(self):
+		return self.goalsFor - self.goalsAgainst
 
 	@property
-	def Balance(self):
-		return self.Win - self.Lose
+	def points(self):
+		return self.win * 3 + self.drawn
 
 	@property
-	def ColorCode(self):
-		return "CCFFCC" if Balance > 0 else "FFCCCC" if Balance < 0 else "FFFFCC"
+	def balance(self):
+		return self.win - self.lose
 
-	def AddMatch(self, match):
-		if match.Result != "X":
-			self.Matches.append(match)
-			if match.HomeTeam == match.OpponentTeam:
-				if match.ResultHome < match.ResultAway:
-					self.Win += 1
-				elif match.ResultHome > match.ResultAway:
-					self.Lose += 1
+	@property
+	def colorCode(self):
+		return "CCFFCC" if balance > 0 else "FFCCCC" if balance < 0 else "FFFFCC"
+
+	def addMatch(self, match):
+		if match.result != "X":
+			self.matches.append(match)
+			if match.homeTeam == match.opponentTeam:
+				if match.resultHome < match.resultAway:
+					self.win += 1
+				elif match.resultHome > match.resultAway:
+					self.lose += 1
 				else:
-					self.Drawn += 1
-				self.GoalsFor += match.ResultAway;
-				self.GoalsAgainst += match.ResultHome
+					self.drawn += 1
+				self.goalsFor += match.resultAway;
+				self.goalsAgainst += match.resultHome
 			else:
-				if match.ResultHome > match.ResultAway:
-					self.Win += 1
-				elif match.ResultHome < match.ResultAway:
-					self.Lose += 1
+				if match.resultHome > match.resultAway:
+					self.win += 1
+				elif match.resultHome < match.resultAway:
+					self.lose += 1
 				else:
-					self.Drawn += 1
-				self.GoalsFor += match.ResultHome;
-				self.GoalsAgainst += match.ResultAway
+					self.drawn += 1
+				self.goalsFor += match.resultHome;
+				self.goalsAgainst += match.resultAway
 		
 	@property
-	def OpponentWikicode (self):
+	def opponentWikicode (self):
 		return "|- style=\"background:#{0};\"\n| style=\"text-align:left;\" | {1}\n| {2} || {3} || {4} || {5} || {6} || {7} || {8:+0;-0;+0} || {9}".format(
-			self.ColorCode, self.Flag, self.Played, self.Win, self.Drawn, self.Lose, self.GoalsFor, self.GoalsAgainst, self.GoalDiff, self.Points)
+			self.colorCode, self.flag, self.played, self.win, self.drawn, self.lose, self.goalsFor, self.goalsAgainst, self.goalDiff, self.points)
 
 	@property
-	def YearWikicode (self):
+	def yearWikicode (self):
 		return "|-\n| '''{0}''' || {1} || {2} || {3} || {4} || {5} || {6} || {7:+0;-0;+0} || {8}".format(
-			self.Year, self.Played, self.Win, self.Drawn, self.Lose, self.GoalsFor, self.GoalsAgainst, self.GoalDiff, self.Points)
+			self.year, self.played, self.win, self.drawn, self.lose, self.goalsFor, self.goalsAgainst, self.goalDiff, self.points)
+
+	def __init__(self, year):
+		"""
+		Erstellt neues FootballStatElement
+		year (int): Jahr
+		"""
+		self.year = year
+		self.matches = []
 
 	def __init__(self, name, flag):
 		"""
@@ -73,14 +81,6 @@ class FootballStatElement:
 		name (String): Staatsname
 		flag (String): Flaggenkürzel
 		"""
-		self.Name = name
-		self.Flag = str.format("{{{{{0}|#}}}}", flag)
-		self.Matches = []
-
-	def __init__(self, year):
-		"""
-		Erstellt neues FootballStatElement
-		year (int): Jahr
-		"""
-		self.Year = year
-		self.Matches = []
+		self.name = name
+		self.flag = str.format("{{{{{0}|#}}}}", flag)
+		self.matches = []
