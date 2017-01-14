@@ -7,8 +7,7 @@
     <ProjectHome>.</ProjectHome>
     <StartupFile>
     </StartupFile>
-    <SearchPath>
-    </SearchPath>
+    <SearchPath>..\simocraPy\simocracy\</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>WikiAnalyser</Name>
@@ -26,35 +25,27 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="FootballMatchAnalyser\FootballMatch.py">
+    <Compile Include="footballMatchAnalyzer\footballMatch.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="FootballMatchAnalyser\FootballStatElement.py">
+    <Compile Include="footballMatchAnalyzer\footballStatElement.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="FootballMatchAnalyser\__init__.py">
+    <Compile Include="footballMatchAnalyzer\__init__.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Simocracy\FlagConverter.py">
+    <Compile Include="tests\testFootballMatch.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Simocracy\__init__.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Tests\TestFootballMatch.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Tests\__init__.py">
+    <Compile Include="tests\__init__.py">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="FootballMatchAnalyser\" />
-    <Folder Include="Simocracy\" />
-    <Folder Include="Tests\" />
+    <Folder Include="footballMatchAnalyzer\" />
+    <Folder Include="tests\" />
   </ItemGroup>
   <ItemGroup>
-    <InterpreterReference Include="{218a1df2-5ccd-4b50-a3d4-cead6d047e75}\3.5" />
     <InterpreterReference Include="{9a7a9026-48c1-4688-9d5d-e5699d47d074}\3.5" />
   </ItemGroup>
   <PropertyGroup>

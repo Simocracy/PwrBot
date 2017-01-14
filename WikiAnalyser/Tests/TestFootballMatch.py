@@ -2,7 +2,7 @@ import unittest
 
 from datetime import datetime
 
-from FootballMatchAnalyser.FootballMatch import FootballMatch
+from footballMatchAnalyzer.footballMatch import FootballMatch
 
 class Test_FootballMatch(unittest.TestCase):
 	def test_SetDateNumbers1(self):

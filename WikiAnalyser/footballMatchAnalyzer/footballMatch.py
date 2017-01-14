@@ -3,8 +3,9 @@ import re
 from datetime import datetime
 from collections import OrderedDict
 
-from FootballMatchAnalyser.FootballStatElement import FootballStatElement
-from Simocracy.FlagConverter import FlagConverter
+import simocracy.flagConverter
+from footballMatchAnalyzer.footballStatElement import FootballStatElement
+
 
 class FootballMatch:
 	"""
@@ -213,8 +214,8 @@ class FootballMatch:
 
 			isNoneFlag = "?" in flag
 			isDummyName = "#" in name
-			flag = FlagConverter.GetFlag(name if isNoneFlag else flag)
-			name = FlagConverter.GetStateName(flag if isDummyName else name)
+			flag = flagConverter.GetFlag(name if isNoneFlag else flag)
+			name = flagConverter.GetStateName(flag if isDummyName else name)
 
 			if not name in dic:
 				fse = FootballStatElement(name, flag)
