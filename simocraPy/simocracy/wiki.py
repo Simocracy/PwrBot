@@ -976,7 +976,7 @@ def removeLinks(s):
 """
 Schreibt den Text text in den Artikel article.
 """
-def editArticle(article, text):
+def editArticle(article, text, section=-1):
     print("Bearbeite "+article)
 
     #Edit-Token lesen
@@ -988,11 +988,13 @@ def editArticle(article, text):
     
     #Seite bearbeiten
     query_args = { 'text':text, 'token':editToken }
+    if section > -1:
+        query_args['section'] = section
     query_url = _url + 'api.php?action=edit&bot&format=xml&title=' + urllib.parse.quote(article)
     response = opener.open(query_url, urllib.parse.urlencode(query_args).encode('utf8'))
 
     #Result auslesen
-    return response
+    #return response
     response.readline()
     xmlRoot = ET.fromstring(response.readline())
     if xml.find('edit').attrib['result'] != 'Success':
