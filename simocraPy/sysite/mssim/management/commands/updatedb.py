@@ -1,5 +1,4 @@
 ﻿#!/usr/bin/python
-# -*- coding: UTF-8 -*-
 
 import urllib.request, urllib.parse, urllib.error, urllib.request, urllib.error, urllib.parse, http.cookiejar
 import xml.etree.ElementTree as ET
