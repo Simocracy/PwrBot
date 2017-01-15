@@ -5,9 +5,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>de56790c-d1ea-4785-8445-5348d9308ab7</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>
-    </StartupFile>
-    <SearchPath>..\simocraPy\</SearchPath>
+    <StartupFile>main.py</StartupFile>
+    <SearchPath>..\simocraPy\;..\simocraPy\simocracy\</SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
     <OutputPath>.</OutputPath>
     <Name>WikiAnalyser</Name>
@@ -36,6 +35,9 @@
     <Compile Include="footballMatchAnalyzer\__init__.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="main.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="tests\testFootballMatch.py">
       <SubType>Code</SubType>
     </Compile>
@@ -46,6 +48,13 @@
   <ItemGroup>
     <Folder Include="footballMatchAnalyzer\" />
     <Folder Include="tests\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\simocraPy\simocraPy.pyproj">
+      <Name>simocraPy</Name>
+      <Project>{b2d45512-ef27-4544-a05f-4f6ac6672bee}</Project>
+      <Private>True</Private>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
