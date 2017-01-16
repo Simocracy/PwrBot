@@ -16,11 +16,6 @@ namespace Simocracy.PwrBot
 		/// </summary>
 		public static string[] MainTeam { get; set; } = { "UNS" };
 
-		/// <summary>
-		/// Liste der Nachfolgerstaaten, FLAGGENKÜRZEL, Schema Vorgänger -> Aktueller Staat (bzw. Nachfolger)
-		/// </summary>
-		public static Dictionary<string, string> Successor { get; set; } = new Dictionary<string, string>();
-
 		private string _Tournament;
 		public string Tournament
 		{
