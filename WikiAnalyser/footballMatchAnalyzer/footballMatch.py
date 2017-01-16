@@ -10,16 +10,13 @@ class FootballMatch:
 	"""
 	Fußballspiel
 	"""
-	
+
 	"""
 	Team, dessen Statistik erstellt wird, Basierend auf FLAGGENKÜRZEL
 	"""
 	mainTeam = ["UNS"]
 
-	"""
-	Liste der Nachfolgerstaaten, FLAGGENKÜRZEL, Schema Vorgänger -> Aktueller Staat (bzw. Nachfolger)
-	"""
-	sucessor = []
+	# Instance Fields
 
 	_tournament = ""
 	@property
@@ -75,10 +72,10 @@ class FootballMatch:
 		"""
 		Gegnerteam für Sortierung nach Gegner
 		"""
-		for s in self.mainTeam:
+		for s in FootballMatch.mainTeam:
 			if s in self.awayTeam:
 				return self.homeTeam
-			return self.awayTeam
+		return self.awayTeam
 		
 	"""
 	-1 wenn kein Spielergebnis
@@ -114,12 +111,18 @@ class FootballMatch:
 	def referee(self, value):
 		self._referee = value.strip().replace("'", "")
 
-	"""
-	Quellcode im Wiki
-	"""
-	sourceCode = ""
+	def __init__(self, *args, **kwargs):
+		if len(args) == 10:
+			self.initFromInput(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9])
+		elif len(args) == 1:
+			self.initFromMatch(args[0])
+		else:
+			return None
 
-	def __init__(self, tournament, date, city, stadium, homeTeam, awayTeam, result, spectators, soldOut, referee, source):
+	def initFromMatch(self, reMatch):
+		self.initFromInput(reMatch[0], reMatch[1], reMatch[2], reMatch[3], reMatch[4], reMatch[5], reMatch[6], reMatch[7], reMatch[8], reMatch[9])
+
+	def initFromInput(self, tournament, date, city, stadium, homeTeam, awayTeam, result, spectators, soldOut, referee):
 			self.tournament = tournament;
 			self.setDate(date);
 			self.city = city;
@@ -130,7 +133,6 @@ class FootballMatch:
 			self.setSpectators(spectators);
 			self.SetIsSoldOut(soldOut);
 			self.referee = referee;
-			self.sourceCode = source;
 
 	def setDate(self, date):
 		try:
@@ -181,7 +183,7 @@ def getMatchList(matches):
 	"""
 	matchList = []
 	for match in matches:
-		matchList.append(match)
+		matchList.append(FootballMatch(match))
 	return matchList
 	
 def groupByOpponents(matches):
@@ -195,9 +197,9 @@ def groupByOpponents(matches):
 	for match in matches:
 		flagMatch = flagTempRegex.match(match.opponentTeam)
 
-		flag = flagMatch.group(1)
-		if len(flag.strip()) < 1:
+		if flagMatch is None:
 			continue
+		flag = flagMatch.group(1)
 
 		# {{GRA|Grafenberg}} -> Grafenberg
 		if not flagMatch.group(3) is None and not "=" in flagMatch.group(3) and re.match(r"\d+", flagMatch.group(3)) is None:
@@ -242,11 +244,11 @@ def getOpponentTableCode(opponents):
 			"! <abbr title=\"Gegentore\">GT</abbr>\n"
 			"! <abbr title=\"Tordifferenz\">TD</abbr>\n"
 			"! <abbr title=\"Punkte\">P</abbr>")
-	for opp in opponents:
-		if not opp.Flag in FootballMatch.mainTeam:
-			text = str.format("{0}\n{1}", text, opp.opponentWikicode)
+	for opp in opponents.items():
+		if not opp[1].flag in FootballMatch.mainTeam:
+			text = str.format("{0}\n{1}", text, opp[1].opponentWikicode)
 
-	text = str.format("{0}\n|}}\n<sup>Stand: <drechner eing=\"j\" day=\"j\">{1:%Y-%m-%d %H:%M}</drechner></sup>", text, datetime.datetime.now())
+	text = str.format("{0}\n|}}\n<sup>Stand: <drechner eing=\"j\" day=\"j\">{1:%Y-%m-%d %H:%M}</drechner></sup>", text, datetime.now())
 
 	return text
 
@@ -307,7 +309,7 @@ def analyseFootballStats(articleName, mainTeams):
 	articleName: Artikel mit der Statistik
 	mainTeams[]: Mainteams, auf die ausgewertet werden soll
 	"""
-	MainTeam = mainTeams
+	FootballMatch.mainTeam = mainTeams
 
 	"""
 	Gruppen:
@@ -328,25 +330,30 @@ def analyseFootballStats(articleName, mainTeams):
 	p = wiki.Article(articleName)
 		
 	# Abschnitte analysieren
-	sectionMatches = re.match(r"(^={1,6}(.*)?={1,6}\s*?$)", p.text, re.RegexFlag.MULTILINE)
+	sectionMatches = re.findall(r"(^={1,6}(.*)?={1,6}\s*?$)", p.textStr, re.RegexFlag.MULTILINE)
 		
 	counter = 0
 	opponentSection = 0
 	yearSection = 0
 	for sectMatch in sectionMatches:
 		counter += 1
-		if "Nach Gegner" in sectMatch:
+		if "Gegner" in sectMatch[0]:
 			opponentSection = counter
-		elif "Nach Jahr" in sectMatch:
+		elif "Jahr" in sectMatch[0]:
 			yearSection = counter
 
-	matchesRegex = re.match(matchRegexPat, p.text)
+	matchesRegex = re.findall(matchRegexPat, p.textStr)
 	footballMatchList = getMatchList(matchesRegex)
-	print(len(footballMatchList) + " Spiele gefunden")
+	print(str(len(footballMatchList)) + " Spiele gefunden")
 
 	# Gegnerstats
 	if opponentSection > 0:
-		return
+		opponents = groupByOpponents(footballMatchList)
+		print(str(len(opponents)) + " Gegner gefunden")
+		for o in opponents.items():
+			print(o[0] + ": " + str(o[1].played) + " Spiele")
+
+		sectionText = getOpponentTableCode(opponents)
 
 	# Jahresstats
 	if yearSection > 0:
