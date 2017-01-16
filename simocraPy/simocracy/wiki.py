@@ -296,6 +296,7 @@ class Article:
         self.title = None
         self.templates = None
         self.text = []
+        self.textStr = ""
         self._cursor = { "line":-1, "char":0, "modified":False }
         
         qry = "api.php?format=xml&action=query&titles="
@@ -332,6 +333,7 @@ class Article:
             
         for line in site.readlines():
             self.text.append(line.decode('utf-8'))
+            self.textStr += line.decode('utf-8')
             
     """
     Cursor-Definition
