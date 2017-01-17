@@ -67,7 +67,8 @@ namespace Simocracy.PwrBot
 			{"Nuestra Senora", "NUS"},
 			{"Simultanien", "NUS"},
 			{"Azoren", "KBAZ"},
-			{"IBRU", "KBAB"}
+			{"IBRU", "KBAB"},
+			{"ORV", "NOR"}
 		};
 
 		/// <summary>
@@ -222,7 +223,12 @@ namespace Simocracy.PwrBot
 			{"YJB", "Yojahbalo"},
 			{"ZUM", "Zumanien"},
 			{"ZR", "Zumanien"},
-			{"KBAZ", "Azoren"}
+			{"KBAZ", "Azoren"},
+			{"ORV", "Norkanien"},
+			{"NOR", "Norkanien"},
+			{"UGD", "Ugandia"},
+			{"ANT", "Ugantares"},
+			{"VAL", "Valgerik"}
 		};
 
 		/// <summary>

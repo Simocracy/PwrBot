@@ -62,7 +62,8 @@ flags = {
 	"Nuestra Senora": "NUS",
 	"Simultanien": "NUS",
 	"Azoren": "KBAZ",
-	"IBRU": "KBAB"
+	"IBRU": "KBAB",
+	"ORV": "NOR"
 	}
 
 """
@@ -217,7 +218,12 @@ stateNames = {
 	"YJB": "Yojahbalo",
 	"ZUM": "Zumanien",
 	"ZR": "Zumanien",
-	"KBAZ": "Azoren"
+	"KBAZ": "Azoren",
+	"ORV": "Norkanien",
+	"NOR": "Norkanien",
+	"UGD": "Ugandia",
+	"ANT": "Ugantares",
+	"VAL": "Valgerik"
 	}
 	
 def getFlag(name):
