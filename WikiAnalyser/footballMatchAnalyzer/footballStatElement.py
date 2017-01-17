@@ -44,20 +44,22 @@ class FootballStatElement:
 		return "|-\n| '''{0}''' || {1} || {2} || {3} || {4} || {5} || {6} || {7:+d} || {8}".format(
 			self.year, self.played, self.win, self.drawn, self.lose, self.goalsFor, self.goalsAgainst, self.goalsDiff, self.points)
 
-	def __init__(self, year):
+	def __init__(self, *args, **kwargs):
 		"""
 		Erstellt neues FootballStatElement
 		year (int): Jahr
-		"""
-		self.year = year
-		self.matches = []
-
-	def __init__(self, name, flag):
-		"""
-		Erstellt neues FootballStatElement
 		name (String): Staatsname
 		flag (String): Flaggenkürzel
 		"""
+		if len(args) == 1:
+			self.initFromYear(args[0])
+		elif len(args) == 2:
+			self.initFromOpponent(args[0], args[1])
+
+	def initFromYear(self, year):
+		self.year = year
+
+	def initFromOpponent(self, name, flag):
 		self.name = name
 		self.flag = str.format("{{{{{0}|#}}}}", flag)
 		self.matches = []

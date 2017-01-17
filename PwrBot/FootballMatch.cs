@@ -377,7 +377,7 @@ namespace Simocracy.PwrBot
 
 			foreach(var match in matches)
 			{
-				if(match.Date != DateTime.MinValue)
+				if(match.Date != DateTime.MinValue && !MainTeam.Contains(Regex.Match(match.OpponentTeam, @"\{\{([^\|\}]*)(\|([^\}\|]*))?(\|([^\}\|]*))?\}\}").Groups[1].Value))
 				{
 					if(!sdic.ContainsKey(match.Date.Year))
 					{
