@@ -252,10 +252,11 @@ def getOpponentTableCode(opponents):
 
 	return text
 
-def sortForYears(matches):
-	dic = {int:FootballStatElement}
-	for match in machtes:
-		if not match.date is datetime.min:
+def groupByYears(matches):
+	dic = {}
+	for match in matches:
+		flag = re.match(r"\{\{([^\|\}]*)(\|([^\}\|]*))?(\|([^\}\|]*))?\}\}", match.opponentTeam)
+		if not match.date is datetime.min and not flag is None and not flag.group(1) in FootballMatch.mainTeam:
 			if not match.date.year in dic:
 				fse = FootballStatElement(match.date.year)
 				dic[match.date.year] = fse
@@ -284,22 +285,22 @@ def getYearTableCode(years):
 	allGoalsFor = 0;
 	allGoalsAgainst = 0;
 
-	for year in years:
-		allWon += year.win
-		allDrawn += year.drawn
-		allLose += year.lose
-		allGoalsFor += year.goalsFor
-		allGoalsAgainst += year.goalsAgainst
+	for year in years.items():
+		allWon += year[1].win
+		allDrawn += year[1].drawn
+		allLose += year[1].lose
+		allGoalsFor += year[1].goalsFor
+		allGoalsAgainst += year[1].goalsAgainst
 
-		text = str.format("{0}|n{1}", text, year.yearWikicode)
+		text = str.format("{0}\n{1}", text, year[1].yearWikicode)
 
 	played = allWon + allDrawn + allLose
 	allGoalDiff = allGoalsFor - allGoalsAgainst
 	points = allWon * 3 + allDrawn
 
-	text = str.format("{0}\n|-\n! Ges. || {1} || {2} || {3} || {4} || {5} || {6} || {7:+0;-0;+0} || {8}\n|}}" +
+	text = str.format("{0}\n|-\n! Ges. || {1} || {2} || {3} || {4} || {5} || {6} || {7:+0d} || {8}\n|}}" +
 				"\n<sup>Stand: <drechner eing=\"j\" day=\"j\">{9:%Y-%m-%d %H:%M}</drechner></sup>",
-			text, played, allWon, allDrawn, allLose, allGoalsFor, allGoalsAgainst, allGoalDiff, points, datetime.datetime.now())
+			text, played, allWon, allDrawn, allLose, allGoalsFor, allGoalsAgainst, allGoalDiff, points, datetime.now())
 
 	return text
 
@@ -354,7 +355,14 @@ def analyseFootballStats(articleName, mainTeams):
 			print(o[0] + ": " + str(o[1].played) + " Spiele")
 
 		sectionText = getOpponentTableCode(opponents)
+		#wiki.editArticle(articleName, sectionText, opponentSection)
 
 	# Jahresstats
 	if yearSection > 0:
-		return
+		years = groupByYears(footballMatchList)
+		print(str(len(years)) + " Jahre gefunden")
+		for y in years.items():
+			print(str(y[0]) + ": " + str(y[1].played) + " Spiele")
+
+		sectionText = getYearTableCode(years)
+		#wiki.editArticle(articleName, sectionText, yearSection)
