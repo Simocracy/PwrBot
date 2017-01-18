@@ -5,9 +5,10 @@ using DotNetWikiBot;
 
 namespace Simocracy.PwrBot
 {
-	class Program : Bot
+	class PwrBot : Bot
 	{
-		public static Site Site = PwrBot.GetSite();
+		private static Site _Site;
+		public static Site Site => _Site ?? (_Site = new Site("http://simocracy.de", PwrBotLogin.Username, PwrBotLogin.Password));
 
 		static void Main(string[] args)
 		{
