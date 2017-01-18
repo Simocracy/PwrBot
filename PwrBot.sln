@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PwrBot.Tests", "PwrBot.Test
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "WikiAnalyser", "WikiAnalyser\WikiAnalyser.pyproj", "{DE56790C-D1EA-4785-8445-5348D9308AB7}"
 EndProject
-Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "simocraPy", "simocraPy\simocraPy.pyproj", "{B2D45512-EF27-4544-A05F-4F6AC6672BEE}"
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "simocraPy", "simocraPy.pyproj", "{475E87E7-2369-484B-8734-4834FD1DC522}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,8 +27,8 @@ Global
 		{7640E324-1469-4BA4-A6C3-82853E87C033}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DE56790C-D1EA-4785-8445-5348D9308AB7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DE56790C-D1EA-4785-8445-5348D9308AB7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B2D45512-EF27-4544-A05F-4F6AC6672BEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B2D45512-EF27-4544-A05F-4F6AC6672BEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{475E87E7-2369-484B-8734-4834FD1DC522}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{475E87E7-2369-484B-8734-4834FD1DC522}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

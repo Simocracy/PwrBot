@@ -248,7 +248,7 @@ ModelManifest.xml
 *.pyc
 
 # Password files for wiki login
-PwrBot/PwrBot.cs
+PwrBot/PwrBotLoginData.cs
 
 # SimocraPy
 simocraPy/
