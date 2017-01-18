@@ -232,7 +232,6 @@ def getOpponentTableCode(opponents):
 
 	"""
 	text = ("=== Nach Gegner ===\n"
-			"<html>"
 			"{| class=\"wikitable sortable\" style=\"text-align:center;\"\n"
 			"|-\n"
 			"! Mannschaft\n"
@@ -245,7 +244,8 @@ def getOpponentTableCode(opponents):
 			"! <abbr title=\"Tordifferenz\">TD</abbr>\n"
 			"! <abbr title=\"Punkte\">P</abbr>")
 	for opp in opponents.items():
-		if not opp[1].flag in FootballMatch.mainTeam:
+		flag = re.match(r"\{\{([^\|\}]*)(\|([^\}\|]*))?(\|([^\}\|]*))?\}\}", opp[1].flag)
+		if not flag is None and not flag.group(1) in FootballMatch.mainTeam:
 			text = str.format("{0}\n{1}", text, opp[1].opponentWikicode)
 
 	text = str.format("{0}\n|}}\n<sup>Stand: <drechner eing=\"j\" day=\"j\">{1:%Y-%m-%d %H:%M}</drechner></sup>", text, datetime.now())
@@ -355,7 +355,7 @@ def analyseFootballStats(articleName, mainTeams):
 			print(o[0] + ": " + str(o[1].played) + " Spiele")
 
 		sectionText = getOpponentTableCode(opponents)
-		#wiki.editArticle(articleName, sectionText, opponentSection)
+		wiki.editArticle(articleName, sectionText, opponentSection)
 
 	# Jahresstats
 	if yearSection > 0:
@@ -365,4 +365,4 @@ def analyseFootballStats(articleName, mainTeams):
 			print(str(y[0]) + ": " + str(y[1].played) + " Spiele")
 
 		sectionText = getYearTableCode(years)
-		#wiki.editArticle(articleName, sectionText, yearSection)
+		wiki.editArticle(articleName, sectionText, yearSection)
