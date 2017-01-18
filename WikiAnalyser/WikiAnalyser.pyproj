@@ -49,13 +49,6 @@
     <Folder Include="footballMatchAnalyzer\" />
     <Folder Include="tests\" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\simocraPy\simocraPy.pyproj">
-      <Name>simocraPy</Name>
-      <Project>{b2d45512-ef27-4544-a05f-4f6ac6672bee}</Project>
-      <Private>True</Private>
-    </ProjectReference>
-  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
