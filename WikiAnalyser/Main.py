@@ -1,5 +1,6 @@
-import sys
-sys.path.append("../simocraPy/")
+﻿import sys
+import os
+sys.path.append(os.path.abspath("../simocraPy/"))
 
 from simocracy import wiki
 from footballMatchAnalyzer import footballMatch

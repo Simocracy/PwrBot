@@ -229,7 +229,6 @@ def getOpponentTableCode(opponents):
 	Ausgabe der Bilanz von MainTeam nach Gegnern
 	opponents: Bilanz als OrderedDict<string, FootballStatElement>
 	return: Bilanz als Wikicode
-
 	"""
 	text = ("=== Nach Gegner ===\n"
 			"{| class=\"wikitable sortable\" style=\"text-align:center;\"\n"
@@ -331,8 +330,8 @@ def analyseFootballStats(articleName, mainTeams):
 	p = wiki.Article(articleName)
 		
 	# Abschnitte analysieren
-	sectionMatches = re.findall(r"(^={1,6}(.*)?={1,6}\s*?$)", p.textStr, re.RegexFlag.MULTILINE)
-		
+	sectionMatches = re.findall(r"(^={1,6}(.*)?={1,6}\s*?$)", p.asString, re.MULTILINE)
+	
 	counter = 0
 	opponentSection = 0
 	yearSection = 0
@@ -343,7 +342,7 @@ def analyseFootballStats(articleName, mainTeams):
 		elif "Jahr" in sectMatch[0]:
 			yearSection = counter
 
-	matchesRegex = re.findall(matchRegexPat, p.textStr)
+	matchesRegex = re.findall(matchRegexPat, p.asString)
 	footballMatchList = getMatchList(matchesRegex)
 	print(str(len(footballMatchList)) + " Spiele gefunden")
 
