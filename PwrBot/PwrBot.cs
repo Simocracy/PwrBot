@@ -8,7 +8,7 @@ namespace Simocracy.PwrBot
 	class PwrBot : Bot
 	{
 		private static Site _Site;
-		public static Site Site => _Site ?? (_Site = new Site("http://simocracy.de", PwrBotLogin.Username, PwrBotLogin.Password));
+		public static Site Site => _Site ?? (_Site = new Site("https://simocracy.de", PwrBotLoginData.Username, PwrBotLoginData.Password));
 
 		static void Main(string[] args)
 		{
