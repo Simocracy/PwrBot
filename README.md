@@ -26,12 +26,7 @@ Der Bot dient hauptsächlich als Unterstützung für einmalige Arbeiten.
 Der WikiAnalyzer ist eine in Python konvertierte Version der im `PwrBot` zu findenden Auswertung von Fußballstatistiken für Nationalmannschaften in Simocracy.
 
 #### Installation
-Um den WikiAnalyzer lokal nutzen zu können, muss zunächst [simocraPy](https://github.com/Simocracy/simocraPy) heruntergeladen und nach `simocraPy\` kopiert werden. Anschließend muss die Datei `simocraPy\simocracy\credentials.py` mit folgendem Inhalt erstellt werden:
-```
-username="BENUTZER"
-password="PASSWORT"
-```
-`BENUTZER` und `PASSWORT` sind die Anmeldedaten für den Wiki-Account im [Wikocracy](https://simocracy.de/).
+Um den WikiAnalyzer lokal nutzen zu können, muss zunächst [simocraPy](https://github.com/Simocracy/simocraPy) heruntergeladen und nach `simocraPy\` kopiert werden. Anschließend müssen die Login-Daten für den Bot im [Wikocracy](https://simocracy.de/) in der Date `WikiAnalyzer\pwrbot.cfg` im Abschnitt `[WIKI]` eingegeben werden. Ebenso werden da die zu analysierenden Artikel und die Flaggenkürzel der auszuwertenden Nationalmannschaft und deren Vorgänger angegeben. Die Indizes neuer Einträge sind fortlaufend hochzuzählen.
 
 #### Anwendung
 Damit die Daten ausgewertet werden können, müssen Abschnitte für Gegnerstatistiken (in der Überschrift muss die Zeichenkette `Gegner` enthalten sein) bzw. für Jahresstatistiken (`Jahr` muss enthalten sein) vorhanden sein. Es wird jeweils der zuletzt vorkommende Abschnitt genutzt.
