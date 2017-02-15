@@ -252,3 +252,6 @@ PwrBot/PwrBotLoginData.cs
 
 # SimocraPy
 simocraPy/
+
+# Enable custom config for development
+WikiAnalyser/pwrbot.cfg

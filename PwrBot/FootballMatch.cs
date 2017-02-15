@@ -460,7 +460,7 @@ namespace Simocracy.PwrBot
 			var matchRegexPat = @"\|(.*[^\|\r\n]*)\s*[\r\n|\|]\|\s*([^\|\r\n]*)?\s*[\r\n|\|]\|\s*(\{\{.+\}\}[^\|\r\n]*)[\r\n\|]\|\s*([^\|\r\n]*)?\s*[\r\n\|]\|\s*('{0,3}\{\{.+\}\}[^\|\r\n]*)?\s*[\r\n\|]\|\s*('{0,3}\{\{.+\}\}[^\|\r\n]*)?\s*[\r\n\|]\|\s*[^\|]*\|\s*'''([^']*)'''[^\|\r\n]*?\s*[\r\n\|]\|\s*([\d\.]*)(\s*\(a\))?\s*[\r\n\|]\|\s*(\{\{.*\}\}[^\|\r\n]*)?";
 
 			Console.WriteLine("Lade Artikel");
-			Page p = new Page(articleName);
+			Page p = new Page(PwrBot.Site, articleName);
 			p.Load();
 
 			var sectionMatches = Regex.Matches(p.text, @"(^={1,6}(.*)?={1,6}\s*?$)", RegexOptions.Multiline);
