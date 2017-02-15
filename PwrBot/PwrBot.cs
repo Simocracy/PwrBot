@@ -8,7 +8,7 @@ namespace Simocracy.PwrBot
 	class PwrBot : Bot
 	{
 		private static Site _Site;
-		public static Site Site => _Site ?? (_Site = new Site("http://simocracy.de", PwrBotLogin.Username, PwrBotLogin.Password));
+		public static Site Site => _Site ?? (_Site = new Site("https://simocracy.de", PwrBotLoginData.Username, PwrBotLoginData.Password));
 
 		static void Main(string[] args)
 		{
@@ -17,13 +17,14 @@ namespace Simocracy.PwrBot
 
 			try
 			{
-				FootballMatch.AnalyseFootballStats("Statistik der UNAS-Fußballnationalmannschaft der Herren",
-					new String[] {"UNS", "VSB", "AME", "CDO", "RIV"});
+				//FootballMatch.AnalyseFootballStats("Statistik der UNAS-Fußballnationalmannschaft der Herren",
+				//	new String[] {"UNS", "VSB", "AME", "CDO", "RIV"});
 
 				//ChangeMedirienNamespace();
 				//ChangeUNSFlaggeHistorisch();
 				//ReplaceOldFlagTemplates();
 				//RemoveCategories();
+				ChangeFlaggeHistorisch();
 			}
 			catch(Exception e)
 			{
@@ -134,6 +135,38 @@ namespace Simocracy.PwrBot
 					}
 					else
 						Console.WriteLine(p.title + " bereits bearbeitet.");
+				}
+				else
+					Console.WriteLine(p.title + " enthählt keine Vorlage.");
+			}
+		}
+
+		/// <summary>
+		/// Passt die historischen Flaggen an die neuen Vorlagenfunktionen an
+		/// </summary>
+		static void ChangeFlaggeHistorisch()
+		{
+			var flagCodeOld = "RPP";
+			var flagCodeNew = "RPP44";
+			var templateName = "Vorlage:" + flagCodeOld;
+			var templateRegex = new Regex(@"\{\{(" + flagCodeOld + @")(\|[^\}]*)?\}\}");
+
+			Console.WriteLine("Ändere Einbindung historischer Flaggen von " + flagCodeOld);
+
+			var pl = new PageList(Site);
+			//pl.FillFromLinksToPage(tempUNS);
+			pl.FillFromTransclusionsOfPage(templateName);
+			Console.WriteLine("Seitenanzahl: " + pl.Count());
+
+			foreach(var p in pl.pages)
+			{
+				p.Load();
+				var tempMatch = templateRegex.Match(p.text);
+
+				if(tempMatch.Success)
+				{
+					p.text = templateRegex.Replace(p.text, "{{" + flagCodeNew + "$2}}");
+					p.Save("Anpassung historischer Flaggen von " + flagCodeOld, true);
 				}
 				else
 					Console.WriteLine(p.title + " enthählt keine Vorlage.");
