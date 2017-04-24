@@ -354,7 +354,7 @@ def analyseFootballStats(articleName, mainTeams):
 			print(o[0] + ": " + str(o[1].played) + " Spiele")
 
 		sectionText = getOpponentTableCode(opponents)
-		wiki.editArticle(articleName, sectionText, opponentSection)
+		wiki.edit_article(articleName, sectionText, opponentSection)
 
 	# Jahresstats
 	if yearSection > 0:
@@ -364,4 +364,4 @@ def analyseFootballStats(articleName, mainTeams):
 			print(str(y[0]) + ": " + str(y[1].played) + " Spiele")
 
 		sectionText = getYearTableCode(years)
-		wiki.editArticle(articleName, sectionText, yearSection)
+		wiki.edit_article(articleName, sectionText, yearSection)
